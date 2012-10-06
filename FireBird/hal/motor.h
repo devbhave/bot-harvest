@@ -9,17 +9,18 @@
 typedef enum TagMotorDirection {
   FORWARD     = 0x06,
   BACKWARD    = 0x09,
-  RIGHT       = 0x05,
-  LEFT        = 0x0A,
-  SOFT_RIGHT  = 0x04,
-  SOFT_LEFT   = 0x02,
-  SOFT_RIGHT2 = 0x01,
-  SOFT_LEFT2  = 0x08,
+  RIGHT       = 0x0A,
+  LEFT        = 0x05,
+  SOFT_RIGHT  = 0x02,
+  SOFT_LEFT   = 0x04,
+  SOFT_RIGHT2 = 0x08,
+  SOFT_LEFT2  = 0x01,
   STOP        = 0x00
 } MotorDirection;
 
 extern STATUS initMotor(void);
 extern STATUS motorDirectionSet(MotorDirection direction);
 extern STATUS motorVelocitySet(BYTE leftMotor, BYTE rightMotor);
+extern STATUS motorLeftPositionEncoderInit(void (*callbackLIntr)(void));
  #endif /* MOTOR_H */
  

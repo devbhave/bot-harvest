@@ -7,7 +7,10 @@
  #include <prjParams.h>
  #include <prjCommon.h>
  #include "motor.h"
- 
+
+static void (*lposIsr) (void); 
+static void (*rposIsr) (void);
+
 static void timer5Init(void) {
     /* Timer 5 initialized in PWM mode for velocity control
      * Prescale:256
@@ -44,9 +47,10 @@ static void timer5Init(void) {
     return STATUS_OK;
  }
  
- STATUS motorDirectionSet(MotorDirection direction) {
+ STATUS motorDirectionSet(MotorDirection direction) { 
     BYTE PortARestore = 0;
 
+	INT_LOCK();
     direction &= 0x0F;          /* removing upper nibbel for the protection */
     PortARestore = PORTA;       /* reading the PORTA original status */
     PortARestore &= 0xF0;       /* making lower direction nibbel to 0 */
@@ -54,13 +58,37 @@ static void timer5Init(void) {
                                     restoring the PORTA status */
     PORTA = PortARestore;       /* executing the command */
 
+	INT_UNLOCK();
     return STATUS_OK;
  }
  
  STATUS motorVelocitySet(BYTE leftMotor, BYTE rightMotor) {
+	INT_LOCK();
     OCR5AL = leftMotor;
     OCR5BL = rightMotor;
-    
+    INT_UNLOCK();
+	
     return STATUS_OK;
  }
  
+STATUS motorLeftPositionEncoderInit(void (*callbackLIntr)(void)) {
+
+	/* Check if argument is invalid or callback is already registered */
+
+	if(callbackLIntr == NULL || lposIsr != NULL)
+		return !STATUS_OK;
+		
+	INT_LOCK();
+	EICRB = EICRB | 0x02;	/* INT4 is set to falling edge */
+	EIMSK = EIMSK | 0x10;	/* Enable INT4 */
+	INT_UNLOCK();
+	
+	lposIsr = callbackLIntr;
+	return STATUS_OK;
+}
+
+ISR(INT4_vect) {
+	if(lposIsr) {
+		(*lposIsr)();
+	}
+}

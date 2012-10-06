@@ -13,7 +13,15 @@
  #define cbit(reg,bit)  reg &= ~(1<<bit)
  #define STATUS         int
  #define STATUS_OK      0
+ #define INT_LOCK()		cli()
+ #define INT_UNLOCK()	sei()
+// #define INT_LOCK()		
+// #define INT_UNLOCK()	
+
  typedef unsigned char  BYTE;
+ #ifndef NULL
+ #define NULL 			(void*)0
+ #endif
 
  /* Common headers */
 

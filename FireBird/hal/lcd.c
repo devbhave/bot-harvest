@@ -8,21 +8,11 @@
  #include <prjCommon.h>
  #include "lcd.h"
  
- STATUS initLcd(void) {
-	/* LCD pin config */
-	DDRC = DDRC | 0xF7; //all the LCD pin's direction set as output
-	PORTC = PORTC & 0x80; // all the LCD pins are set to logic 0 except PORTC 7
-	
-	/* Set 4 bit mode and clear LCD screen */
-	lcdSet4Bit();
-	lcdInit();
- }
- 
- static void _delay_ms(int time)
+ /* static void _delay_ms(int time)
 {
   int cnt = time*1000;
   while(cnt --);
-}
+} */
 
 /*****Function to Reset LCD*****/
 static void lcdSet4Bit()
@@ -64,19 +54,6 @@ static void lcdSet4Bit()
 	cbit(lcd_port,EN);				//Clear Enable Pin
 
 	
-}
-
-/*****Function to Initialize LCD*****/
-static void lcdInit()
-{
-	_delay_ms(1);
-
-	lcdWriteCommand(0x28);			//LCD 4-bit mode and 2 lines.
-	lcdWriteCommand(0x01);
-	lcdWriteCommand(0x06);
-	lcdWriteCommand(0x0E);
-	lcdWriteCommand(0x80);
-		
 }
 
 	 
@@ -130,26 +107,62 @@ static void lcdWriteData(char letter)
 	cbit(lcd_port,EN);
 }
 
-void lcdHome()
+/*****Function to Initialize LCD*****/
+static void lcdInit()
 {
+	_delay_ms(1);
+
+	lcdWriteCommand(0x28);			//LCD 4-bit mode and 2 lines.
+	lcdWriteCommand(0x01);
+	lcdWriteCommand(0x06);
+	lcdWriteCommand(0x0C);
 	lcdWriteCommand(0x80);
+		
 }
 
+STATUS initLcd(void) {
+	/* LCD pin config */
+	DDRC = DDRC | 0xF7; //all the LCD pin's direction set as output
+	PORTC = PORTC & 0x80; // all the LCD pins are set to logic 0 except PORTC 7
+	
+	/* Set 4 bit mode and clear LCD screen */
+	lcdSet4Bit();
+	lcdInit();
+	
+	return STATUS_OK;
+ }
+ 
+void lcdHome()
+{
+	INT_LOCK();
+	lcdWriteCommand(0x80);
+	INT_UNLOCK();
+}
+
+void lcdClear()
+{
+	INT_LOCK();
+	lcdWriteCommand(0x01);
+	INT_UNLOCK();
+}
 
 /*****Function to Print String on LCD*****/
 void lcdString(char *str)
 {
+	INT_LOCK();
 	while(*str != '\0')
 	{
 		lcdWriteData(*str);
 		str++;
 	}
+	INT_UNLOCK();
 }
 
 /*** Position the LCD cursor at "row", "column". ***/
 
-void lcdCursor (char row, char column)
+void lcdCursor (int row, int column)
 {
+	INT_LOCK();
 	switch (row) {
 		case 1: lcdWriteCommand (0x80 + column - 1); break;
 		case 2: lcdWriteCommand (0xc0 + column - 1); break;
@@ -157,10 +170,11 @@ void lcdCursor (char row, char column)
 		case 4: lcdWriteCommand (0xd4 + column - 1); break;
 		default: break;
 	}
+	INT_UNLOCK();
 }
 
 /***** Function To Print Any input value upto the desired digit on LCD *****/
-void lcdPrint (char row, char coloumn, unsigned int value, int digits)
+/* static void lcdPrint (char row, char coloumn, unsigned int value, int digits)
 {
 	unsigned char flag=0;
 	if(row==0||coloumn==0)
@@ -208,4 +222,4 @@ void lcdPrint (char row, char coloumn, unsigned int value, int digits)
 		lcdWriteData('E');
 	}
 	
-}
+} */
