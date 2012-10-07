@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+    xmlns:latexdraw="http://latexdraw.sourceforge.net/namespaces/latexdraw"
+    version="1.1" baseProfile="full">
+    <defs>
+        <marker overflow="visible" orient="auto" id="arrow2-1592">
+            <path
+                d="M 0.0 0.0 L -4.652083333333334 1.6614583333333335 L -2.79125 0.0 L -4.652083333333334 -1.6614583333333335 z "
+                latexdraw:arrSizeNum="2.0" fill="black"/>
+        </marker>
+        <marker overflow="visible" orient="auto" id="arrow2-1595">
+            <path
+                d="M 0.0 0.0 L -4.652083333333334 1.6614583333333335 L -2.79125 0.0 L -4.652083333333334 -1.6614583333333335 z "
+                latexdraw:arrSizeNum="2.0" fill="black"/>
+        </marker>
+        <marker overflow="visible" orient="auto" id="arrow2-1596">
+            <path
+                d="M 0.0 0.0 L -4.652083333333334 1.6614583333333335 L -2.79125 0.0 L -4.652083333333334 -1.6614583333333335 z "
+                latexdraw:arrSizeNum="2.0" fill="black"/>
+        </marker>
+    </defs>
+    <g>
+        <g latexdraw:type="text" id="id1560" font-family="Courier New"
+            fill="black" font-size="18" latexdraw:x="22.0">
+            <text x="22.0" y="69.0"><![CDATA[goto(x10, y10);]]></text>
+        </g>
+        <g latexdraw:type="text" id="id1562" font-family="Courier New"
+            fill="black" font-size="18" latexdraw:x="20.0">
+            <text x="20.0" y="90.0"><![CDATA[takePhoto();]]></text>
+        </g>
+        <g latexdraw:type="text" id="id1565" font-family="Courier New"
+            fill="black" font-size="18" latexdraw:x="22.0">
+            <text x="22.0" y="109.0"><![CDATA[goto(x11, y11);]]></text>
+        </g>
+        <g latexdraw:type="text" id="id1567" font-family="Courier New"
+            fill="black" font-size="18" latexdraw:x="22.0">
+            <text x="22.0" y="169.0"><![CDATA[goto(x12, y12);]]></text>
+        </g>
+        <g latexdraw:type="text" id="id1569" font-family="Courier New"
+            fill="black" font-size="18" latexdraw:x="20.0">
+            <text x="20.0" y="130.0"><![CDATA[takePhoto();]]></text>
+        </g>
+        <g latexdraw:type="text" id="id1572" font-family="Courier New"
+            fill="black" font-size="18" latexdraw:x="20.0">
+            <text x="20.0" y="190.0"><![CDATA[takePhoto();]]></text>
+        </g>
+        <g latexdraw:type="text" id="id1575" font-family="Courier New"
+            fill="black" font-size="18" latexdraw:x="250.0">
+            <text x="250.0" y="80.0"><![CDATA[suspend(monitorTask);]]></text>
+        </g>
+        <g latexdraw:type="text" id="id1577" font-family="Courier New"
+            fill="black" font-size="18" latexdraw:x="250.0">
+            <text x="250.0" y="100.0"><![CDATA[loc = saveCurrBotLocation();]]></text>
+        </g>
+        <g latexdraw:type="text" id="id1579" font-family="Courier New"
+            fill="black" font-size="18" latexdraw:x="250.0">
+            <text x="250.0" y="120.0"><![CDATA[goto(rechageStation.x, rechargeStation.y);]]></text>
+        </g>
+        <g latexdraw:type="text" id="id1581" font-family="Courier New"
+            fill="black" font-size="18" latexdraw:x="250.0">
+            <text x="250.0" y="140.0"><![CDATA[while(batteryFull() != true);]]></text>
+        </g>
+        <g latexdraw:type="text" id="id1583" font-family="Courier New"
+            fill="black" font-size="18" latexdraw:x="250.0">
+            <text x="250.0" y="160.0"><![CDATA[goto(loc.x, loc.y)]]></text>
+        </g>
+        <g latexdraw:type="text" id="id1585" font-family="Courier New"
+            fill="black" font-size="18" latexdraw:x="250.0">
+            <text x="250.0" y="180.0"><![CDATA[resume(monitorTask);]]></text>
+        </g>
+        <g latexdraw:type="rectangle" id="id1587">
+            <rect x="11.0" y="31.0" width="178.0" height="188.0"
+                latexdraw:borderPos="outer" stroke-width="2.0"
+                stroke="black" fill="none"/>
+        </g>
+        <g latexdraw:type="rectangle" id="id1588">
+            <rect x="241.0" y="61.0" width="478.0" height="128.0"
+                latexdraw:borderPos="outer" stroke-width="2.0"
+                stroke="black" fill="none"/>
+        </g>
+        <g latexdraw:type="line" id="id1589">
+            <line x1="90.0" x2="210.0" y1="140.0" y2="140.0"
+                stroke-width="2.0" stroke="black" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="line" id="id1590">
+            <line x1="210.0" x2="210.0" y1="140.0" y2="40.0"
+                stroke-width="2.0" stroke="black" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="line" id="id1591">
+            <line x1="210.0" x2="480.0" y1="40.0" y2="40.0"
+                stroke-width="2.0" stroke="black" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="line" id="id1592">
+            <line x1="480.0" x2="480.0" y1="190.0" y2="210.0"
+                stroke-width="2.0" stroke="black"
+                latexdraw:rotationAngle="0.0" marker-end="url(#arrow2-1592)"/>
+        </g>
+        <g latexdraw:type="line" id="id1593">
+            <line x1="480.0" x2="210.0" y1="210.0" y2="210.0"
+                stroke-width="2.0" stroke="black" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="line" id="id1594">
+            <line x1="210.0" x2="210.0" y1="210.0" y2="150.0"
+                stroke-width="2.0" stroke="black" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="line" id="id1595">
+            <line x1="210.0" x2="90.0" y1="150.0" y2="150.0"
+                stroke-width="2.0" stroke="black"
+                latexdraw:rotationAngle="0.0" marker-end="url(#arrow2-1595)"/>
+        </g>
+        <g latexdraw:type="line" id="id1596">
+            <line x1="480.0" x2="480.0" y1="40.0" y2="60.0"
+                stroke-width="2.0" stroke="black"
+                latexdraw:rotationAngle="0.0" marker-end="url(#arrow2-1596)"/>
+        </g>
+        <g latexdraw:type="dot" id="id1597" latexdraw:size="6.0"
+            latexdraw:dotShape="dot" latexdraw:position="90.0 140.0">
+            <circle r="3.0" fill="black" cx="90.0" cy="140.0"/>
+        </g>
+        <g latexdraw:type="text" id="id1598"
+            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="270.0">
+            <text x="270.0" y="30.0"><![CDATA[Battry Low Interrupt]]></text>
+        </g>
+        <g latexdraw:type="text" id="id1600"
+            font-family="Times New Roman" fill="black" font-size="18" latexdraw:x="50.0">
+            <text x="50.0" y="240.0"><![CDATA[monitorTask]]></text>
+        </g>
+    </g>
+    <metadata>
+        <latexdraw:metadata>
+            <latexdraw:displayBorders>false</latexdraw:displayBorders>
+            <latexdraw:autoAdjust>true</latexdraw:autoAdjust>
+            <latexdraw:ppc>50</latexdraw:ppc>
+            <latexdraw:zoom>1.0</latexdraw:zoom>
+            <latexdraw:unit>cm</latexdraw:unit>
+            <latexdraw:classicGrid>false</latexdraw:classicGrid>
+            <latexdraw:gridGap>10</latexdraw:gridGap>
+            <latexdraw:code>0</latexdraw:code>
+            <latexdraw:displayGrid>true</latexdraw:displayGrid>
+            <latexdraw:magneticGrid>true</latexdraw:magneticGrid>
+            <latexdraw:autoUpdate>true</latexdraw:autoUpdate>
+            <latexdraw:version>2.0.8</latexdraw:version>
+            <latexdraw:size>
+                <latexdraw:width>1215</latexdraw:width>
+                <latexdraw:height>776</latexdraw:height>
+            </latexdraw:size>
+            <latexdraw:position>
+                <latexdraw:x>65</latexdraw:x>
+                <latexdraw:y>24</latexdraw:y>
+            </latexdraw:position>
+            <latexdraw:dividerPosition>0.8082304526748971</latexdraw:dividerPosition>
+            <latexdraw:displayCodePanel>true</latexdraw:displayCodePanel>
+            <latexdraw:displayXScale>true</latexdraw:displayXScale>
+            <latexdraw:displayYScale>true</latexdraw:displayYScale>
+            <latexdraw:delimitorOpacity>130</latexdraw:delimitorOpacity>
+        </latexdraw:metadata>
+    </metadata>
+</svg>

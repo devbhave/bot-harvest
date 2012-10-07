@@ -1,0 +1,311 @@
+\documentclass[a4paper, 12pt]{article}
+\usepackage{a4wide}
+\usepackage{flexiprogram}
+\usepackage{wrapfig}
+\usepackage[usenames,dvipsnames]{pstricks}
+\usepackage{epsfig}
+\usepackage{pst-grad} % For gradients
+\usepackage{pst-plot} % For axes
+\usepackage{pst-node}
+\usepackage{url}
+% \usepackage[labelfont={bf}]{caption}
+
+\bibliographystyle{plain}
+
+% \title{Remotely Controlled and Automated Green House Farming With Android Application}
+% \author{Devendra Bhave\\(114050004) \and Wasim\\(114050007) \and Meenakshi Verma
+% \\(123050014) \and Mukund Lahoti\\(123050018)}
+% \date{\today}
+
+\renewcommand{\baselinestretch}{1.3}
+\setlength{\parindent}{0in}
+
+\begin{document}
+\begin{titlepage}
+ \centering
+ \includegraphics[width=0.15\textwidth]{./iitblogo}\\[1.5cm]
+ \textsc{\LARGE Software Requirements Specification}\\[1.5cm]
+ \textsc{\Large CS684 Projects} \\ [1.5cm]
+ \rule{\linewidth}{0.5mm} \\ [0.5cm]
+ {\LARGE \textbf{Remotely Controlled and Automated Green House Farming With Android Application}}
+ \rule{\linewidth}{0.5mm}
+ \\ [1.5cm]
+
+ \large
+ \begin{tabular}{cc}
+  Devendra Bhave & Mohd Vasimuddin\\
+  (114050004) & (114050007)\\
+  \\
+  Meenakshi Verma & Mukund Lahoti\\
+  (123050014) & (123050018)
+ \end{tabular}
+
+ \vspace{2cm}
+ \today
+\end{titlepage}
+
+\tableofcontents
+
+\newpage
+
+\section{Introduction}
+We propose to use Android technology to remotely control greenhouse and automate
+farming activities. We propose to create downloadable Android Applications (App)
+which will assist user in remotely monitoring and controlling greenhouse environmental
+conditions and be updated with current status of one or more greenhouses.
+User's phone acts as interface as well as tool at every stage of farming.
+
+\subsection{Definitions, Acronyms and Abbreviations}
+\begin{itemize}
+ \item FB: A robot indigenously designed at ERTS laboratory, IIT Bombay. \cite{fbhwmanual, fbswmanual, eyantra}
+ \item ATmega2560: The microcontroller used by FireBird V robot
+ \item AVR GCC: The platform-specific compiler which compiles C code to run on various AVR microcontrollers developed by Atmel
+ \item WinAVR: Open-source software which uses AVR GCC compiler
+ \item AVR Studio: Open-source software which uses AVR GCC compiler
+\end{itemize}
+
+\section{Overall Description}
+Project consists of two key entities -- greenhouse and user. A single greenhouse consists of greenhouse building with
+plants arranged in aisles and troughs formation, greenhouse controller and the Bot. There could be multiple such 
+greenhouses each one equipped with its own greenhouse controller and the Bot. The entity \emph{user} refers to human farmer 
+who is familiar with using Android phone.
+Greenhouse controller autonomously manages greenhouse functions like sunlight control using sun shades, humidity control using
+blowers, etc. It has its own set of sensors, actuators and control logic. We merely need to specify its parameters like
+amount of sunlight needed for plants, permissible humidity range, etc.
+Each greenhouse has one Bot to perform farming tasks. Bot consists of FireBird robot and Android phone.
+User communicates with Bot by connecting one's Android phone with Bot's Android phone.
+Bot moves anywhere inside the greenhouse, takes photos and
+videos of plants, communicates with greenhouse controller, monitors plant growth, harvests crops and alerts user when
+necessary.
+User interacts with the Bot to receive greenhouse status, control greenhouse or to maneuver Bot to perform certain 
+tasks in realtime.
+There are two Android Apps -- User App and Controller App. User App is downloaded into user's phone while Controller
+App goes into Bot's phone.
+
+% Generated with LaTeXDraw 2.0.8
+% Tue Sep 25 01:16:26 IST 2012
+% \usepackage[usenames,dvipsnames]{pstricks}
+% \usepackage{epsfig}
+% \usepackage{pst-grad} % For gradients
+% \usepackage{pst-plot} % For axes
+\scalebox{1} % Change this value to rescale the drawing.
+{
+\begin{pspicture}(0,-4.92)(15.8,4.9)
+\psframe[linewidth=0.04,dimen=outer](3.6,-0.3)(0.0,-2.5)
+\psframe[linewidth=0.04,dimen=outer](5.6,0.7)(2.0,-1.5)
+\psarc[linewidth=0.04](3.8,0.7){1.8}{0.0}{180.0}
+\psarc[linewidth=0.04](1.8,-0.3){1.8}{0.0}{180.0}
+\psline[linewidth=0.04cm](3.6,-2.5)(5.6,-1.5)
+\psline[linewidth=0.04cm](3.6,-0.3)(5.6,0.7)
+\psline[linewidth=0.04cm](1.0,1.3)(3.0,2.3)
+\psline[linewidth=0.04cm](0.0,-2.5)(2.0,-1.5)
+\psline[linewidth=0.04cm](0.0,-0.3)(2.0,0.7)
+\psline[linewidth=0.04cm](1.8,-1.9)(2.6,-1.9)
+\psline[linewidth=0.04cm](1.8,-1.9)(1.8,-2.3)
+\psline[linewidth=0.04cm](2.6,-1.9)(2.6,-2.3)
+\psline[linewidth=0.04cm](1.8,-2.3)(2.6,-2.3)
+\psline[linewidth=0.04cm](1.8,-1.9)(2.2,-1.7)
+\psline[linewidth=0.04cm](2.2,-1.7)(3.0,-1.7)
+\psline[linewidth=0.04cm](3.0,-1.7)(2.6,-1.9)
+\psline[linewidth=0.04cm](3.0,-1.7)(3.0,-2.1)
+\psline[linewidth=0.04cm](2.6,-2.3)(3.0,-2.1)
+\pscircle[linewidth=0.04,linestyle=dashed,dash=0.16cm 0.16cm,dimen=outer](2.4,-2.1){0.8}
+\psline[linewidth=0.04cm](7.0,-0.9)(7.6,-0.3)
+\psline[linewidth=0.04cm](11.6,-0.3)(11.0,-0.9)
+\psline[linewidth=0.04cm](11.6,-0.3)(11.6,-2.1)
+\psline[linewidth=0.04cm](11.6,-2.1)(11.0,-2.7)
+\pscircle[linewidth=0.04,dimen=outer](9.1,-2.6){1.1}
+\psline[linewidth=0.04cm](10.2,-2.7)(11.0,-2.7)
+\psline[linewidth=0.04cm](11.0,-2.7)(11.0,-0.9)
+\psline[linewidth=0.04cm](11.0,-0.9)(7.0,-0.9)
+\psline[linewidth=0.04cm](7.0,-0.9)(7.0,-2.7)
+\psline[linewidth=0.04cm](7.0,-2.7)(8.0,-2.7)
+\psarc[linewidth=0.04](9.9,-2.0){1.1}{280.0}{320.0}
+\psline[linewidth=0.04cm](8.2,1.5)(8.2,-0.9)
+\psline[linewidth=0.04cm](8.2,1.5)(8.8,2.1)
+\psline[linewidth=0.04cm](8.8,2.1)(8.8,-0.3)
+\psline[linewidth=0.04cm](8.8,-0.3)(8.2,-0.9)
+\psline[linewidth=0.04cm](8.2,1.5)(7.8,1.5)
+\psline[linewidth=0.04cm](7.8,1.5)(7.8,-0.9)
+\psline[linewidth=0.04cm](7.8,1.5)(8.4,2.1)
+\psline[linewidth=0.04cm](8.4,2.1)(8.8,2.1)
+\psline[linewidth=0.04cm](7.6,-0.3)(7.8,-0.3)
+\psline[linewidth=0.04cm](9.8,-0.1)(9.8,-0.7)
+\psline[linewidth=0.04cm](9.8,-0.1)(10.4,-0.1)
+\psline[linewidth=0.04cm](10.4,-0.1)(10.4,-0.7)
+\psline[linewidth=0.04cm](9.8,-0.7)(10.4,-0.7)
+\psline[linewidth=0.04cm](9.8,-0.1)(11.4,2.1)
+\pscircle[linewidth=0.04,dimen=outer](11.6,2.1){0.2}
+\psline[linewidth=0.04cm](11.6,1.9)(10.4,-0.1)
+\psline[linewidth=0.04cm](11.6,2.3)(14.1,2.9)
+\psline[linewidth=0.04cm](11.6,1.9)(14.1,2.7)
+\pscircle[linewidth=0.04,dimen=outer](14.1,2.8){0.3}
+\pscircle[linewidth=0.04,dimen=outer](14.1,2.8){0.1}
+\psline[linewidth=0.04cm](10.6,-0.1)(10.6,-0.5)
+\psline[linewidth=0.04cm](10.6,-0.5)(10.4,-0.7)
+\psline[linewidth=0.04cm](10.6,0.1)(10.6,-0.1)
+\psline[linewidth=0.04cm](10.6,0.1)(10.4,-0.1)
+\psline[linewidth=0.04cm](11.6,1.9)(10.6,0.1)
+\psline[linewidth=0.04cm](11.6,-0.3)(10.6,-0.3)
+\psline[linewidth=0.04cm](9.8,-0.3)(8.8,-0.3)
+\psellipse[linewidth=0.04,dimen=outer](8.5,1.3)(0.1,0.2)
+\psline[linewidth=0.04cm](14.2,3.1)(14.4,3.3)
+\psline[linewidth=0.04cm](14.4,3.3)(14.4,2.9)
+\psline[linewidth=0.04cm](14.4,2.9)(14.6,2.9)
+\psline[linewidth=0.04cm](14.6,2.9)(14.4,2.7)
+\psline[linewidth=0.04cm](14.4,2.7)(14.6,2.5)
+\psline[linewidth=0.04cm](14.6,2.5)(14.2,2.5)
+\psline[linewidth=0.04cm](14.2,2.5)(14.2,2.3)
+\psline[linewidth=0.04cm](14.2,2.3)(14.0,2.5)
+\psline[linewidth=0.04cm](14.0,2.5)(13.8,2.3)
+\psline[linewidth=0.04cm](13.8,2.3)(13.8,2.5)
+\psline[linewidth=0.04cm](13.8,2.5)(13.8,2.7)
+\psline[linewidth=0.04cm](13.8,2.7)(13.6,2.7)
+\psline[linewidth=0.04cm](13.6,2.7)(13.8,2.9)
+\psline[linewidth=0.04cm](13.8,2.9)(13.6,3.1)
+\psline[linewidth=0.04cm](13.6,3.1)(14.0,3.1)
+\psline[linewidth=0.04cm](14.0,3.1)(14.0,3.3)
+\psline[linewidth=0.04cm](14.0,3.3)(14.2,3.1)
+\pscircle[linewidth=0.04,linestyle=dashed,dash=0.16cm 0.16cm,dimen=outer](10.9,0.0){4.9}
+\psline[linewidth=0.04cm,linestyle=dashed,dash=0.16cm 0.16cm](2.2,-1.3)(8.2,4.1)
+\psline[linewidth=0.04cm,linestyle=dashed,dash=0.16cm 0.16cm](2.2,-2.9)(10.2,-4.9)
+\usefont{T1}{ptm}{m}{n}
+\rput(8.483438,2.405){Android Phone}
+\usefont{T1}{ptm}{m}{n}
+\rput(9.697344,-1.195){FireBird Bot}
+\usefont{T1}{ptm}{m}{n}
+\rput(1.6484375,2.405){Greenhouse}
+\usefont{T1}{ptm}{m}{n}
+\rput(11.126094,3.805){Robotic Arm}
+\usefont{T1}{ptm}{m}{n}
+\rput(14.121718,0.205){Circular Saw}
+\psline[linewidth=0.04cm,arrowsize=0.05291667cm 2.0,arrowlength=1.4,arrowinset=0.4]{->}(11.0,3.5)(11.0,1.3)
+\psline[linewidth=0.04cm,arrowsize=0.05291667cm 2.0,arrowlength=1.4,arrowinset=0.4]{<-}(14.4,2.5)(14.4,0.5)
+\end{pspicture} 
+}
+
+\subsection{Product Functions}
+\begin{itemize}
+ \item Autonomous greenhouse control with alerts
+ \item Realtime remote monitoring of multiple greenhouses
+ \item Remotely controlled crop harvesting using Bot
+\end{itemize}
+
+\subsection{User Characteristics}
+User's Android phone offers GUI to connect to desired greenhouse. GUI shall report status of that greenhouse on
+successful connection. User may change settings of greenhouse controller or may optionally to choose to maneuver 
+Bot to get closer look at the plants. Bot will stream live video from greenhouse to the user.
+User has full control over the Bot.
+
+\subsection{Constraints}
+Greenhouse settings (values of parameters like desired sunlight, humidity, etc.) must be supplied by user.
+Bot does not intelligently detect nutrient deficiency, ailing plants, pest infestation, ripening of harvest, etc.
+Bot does not automatically harvest crops. User must maneuver Bot manually.
+Bot movement area in greenhouse is bounded by ZigBee and WiFi range.
+
+\subsection{Assumptions and Dependencies}
+The ATmega2560 can execute HEX files. User can operate Android Phone. WiFi network is available at greenhouse.
+Cell phone network is available at greenhouse to send emergency alerts over SMS. 
+
+\subsection{Requirements Subsets}
+\begin{itemize}
+ \item FireBird V
+ \item Spark V 
+ \item Two Android phones
+ \item WiFi access point with Internet connectivity
+ \item Humidity sensor
+ \item Light Intensity sensor
+ \item Robotic arm with circular saw
+\end{itemize}
+
+\section{Details}
+\subsection{Functionality}
+\begin{enumerate}
+ \item Greenhouse controller autonomously maintains light and humidity requirements
+ \item User receives emergency alert over SMS if above task fails
+ \item User remotely connects to desired greenhouse and get its status summary
+ \item User receives live streaming video from the Bot
+ \item User remotely controls Bot, uses circular saw to cut fruits and vegetables from branches 
+ which drop into collector below
+\end{enumerate}
+
+\subsection{Non Functional Requirements}
+\begin{enumerate}
+ \item Intuitive GUI design
+ \item Good quality video streaming
+ \item High speed Internet connection
+\end{enumerate}
+
+
+\subsection{Supportability}
+Code will be written such that it can be extended in the future.
+All the platform dependent code will be written in a separate file so that if any upgrading needs to be done, 
+then only that file needs to be changed and not the entire logic.
+
+
+\subsection{Design Constraints}
+There is only one Bot in a greenhouse. User cannot control more than one Bot at a time.
+Area of greenhouse is determined by ZigBee range
+
+\section{Interfaces}
+\subsection{User Interfaces}
+User App offers graphical interface to the user on the phone. User App must be downloaded and installed.
+User App initially shows list of greenhouses to connect to. On successful connection, user has three options
+on the screen. First option presents current status summary, second one lets user change greenhouse controller's settings
+and third one shows video and controls Bot.
+
+\subsection{Hardware Interfaces}
+\begin{enumerate}
+ \item ATmega2560: Master Microcontroller in FireBird V
+ \item ATmega8: Slave Microcontroller in FireBird V
+ \item Spark V microcontroller
+ \item Power Supply: External 7.4V, 1800mAh Lithium Polymer Battery
+ \item FireBird and Android interface
+\end{enumerate}
+
+\subsection{Software Interfaces}
+\begin{enumerate}
+ \item Compiler: AVR GCC (Specific to Atmel AVR processors)
+ \item Development Tools and IDEs: WinAVR, AVR Studio 4.0.,Eclipse IDE with ADT Plugin
+ (http://www.eclipse.org/downloads/), Android 2.3.3 SDK (API 10) \cite{adr}
+ \item Programming Languages: C, Java.
+\end{enumerate}
+
+\subsection{Communications Interfaces}
+\begin{enumerate}
+ \item WiFi: Connects two Android phones
+ \item GSM: Sends SMS alert
+ \item ZigBee: Connects FireBird and Spark V
+ \item IOIO: Connects Android phone and FireBird
+\end{enumerate}
+
+\section{Quality Control}
+Quality of the project is judged with test cases specified below:
+\begin{enumerate}
+ \item[Test \#1]: Set light parameter of greenhouse to 100\%. This shall completely remove sun shades.
+ \item[Test \#2]: Whenever humidity goes above specified range, air blowers turn on.
+ \item[Test \#3]: Connect to greenhouse from user's phone. Connection should succeed if everything is correctly configured.
+ \item[Test \#4]: User App shall display current status summary correctly
+ \item[Test \#5]: User App shall stream video from Bot correctly
+ \item[Test \#6]: User should be able to control Bot using phone 
+ \item[Test \#7]: User should be able to cut fruits using robotic arm with circular saw
+ \end{enumerate}
+
+\section{Risk Management}
+Tasks that may go wrong and workarounds are specified below.
+\begin{enumerate}
+ \item Unauthorized user controls greenhouse
+ \item[] \emph{Workaround}: Use secure network protocol and authenticate user before connection.
+ \item 2D video on phone does not give accurate depth information.
+ \item[] \emph{Workaround}: User should move robot around to get depth cues. Additionally, we can mount additional camera on
+ Bot to get side view or different camera angle. 
+ \item Internet is down.
+ \item[] \emph{Workaround}: User should go to greenhouse and use LAN to connect to Bot.
+ \item FireBird runs out of battery power.
+ \item[] \emph{Workaround}: Monitor battery level. Alert user to guide Bot to recharge socket when battery is low. 
+\end{enumerate}
+
+\addcontentsline{toc}{section}{References}
+\bibliography{sample}
+\end{document}
+
