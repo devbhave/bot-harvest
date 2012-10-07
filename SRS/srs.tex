@@ -12,7 +12,7 @@
 
 \bibliographystyle{plain}
 
-% \title{Remotely Controlled and Automated Green House Farming With Android Application}
+% \title{Android Based Greenhouse Monitoring And Harvesting Using Accurate And Automated Bot Guidance System}
 % \author{Devendra Bhave\\(114050004) \and Wasim\\(114050007) \and Meenakshi Verma
 % \\(123050014) \and Mukund Lahoti\\(123050018)}
 % \date{\today}
@@ -27,7 +27,7 @@
  \textsc{\LARGE Software Requirements Specification}\\[1.5cm]
  \textsc{\Large CS684 Projects} \\ [1.5cm]
  \rule{\linewidth}{0.5mm} \\ [0.5cm]
- {\LARGE \textbf{Remotely Controlled and Automated Green House Farming With Android Application}}
+ {\LARGE \textbf{Android Based Greenhouse Monitoring And Harvesting Using Accurate And Automated Bot Guidance System}}
  \rule{\linewidth}{0.5mm}
  \\ [1.5cm]
 
@@ -51,9 +51,9 @@
 \section{Introduction}
 We propose to use Android technology to remotely control greenhouse and automate
 farming activities. We propose to create downloadable Android Applications (App)
-which will assist user in remotely monitoring and controlling greenhouse environmental
-conditions and be updated with current status of one or more greenhouses.
-User's phone acts as interface as well as tool at every stage of farming.
+which will assist user in remotely monitoring one or more greenhouses.
+User's phone acts as interface as well as tool at every stage of farming. We propose
+to partially automate harvesting task.
 
 \subsection{Definitions, Acronyms and Abbreviations}
 \begin{itemize}
@@ -70,20 +70,20 @@ plants arranged in aisles and troughs formation, greenhouse controller and the B
 greenhouses each one equipped with its own greenhouse controller and the Bot. The entity \emph{user} refers to human farmer 
 who is familiar with using Android phone.
 Greenhouse controller autonomously manages greenhouse functions like sunlight control using sun shades, humidity control using
-blowers, etc. It has its own set of sensors, actuators and control logic. We merely need to specify its parameters like
-amount of sunlight needed for plants, permissible humidity range, etc.
-Each greenhouse has one Bot to perform farming tasks. Bot consists of FireBird robot and Android phone.
-User communicates with Bot by connecting one's Android phone with Bot's Android phone.
-Bot moves anywhere inside the greenhouse, takes photos and
-videos of plants, communicates with greenhouse controller, monitors plant growth, harvests crops and alerts user when
-necessary.
-User interacts with the Bot to receive greenhouse status, control greenhouse or to maneuver Bot to perform certain 
+blowers, etc. It has its own set of sensors, actuators and control logic. User merely specifies its parameters like
+amount of sunlight needed for plants, permissible humidity range, etc. Operation of such greenhouse controller is out of scope for
+this project.
+Each greenhouse has one Bot to carry out certain farming tasks. Bot consists of FireBird robot with mounted camera and
+robotic arm.
+User communicates with Bot by connecting one's Android phone with the Bot.
+Such communication method is assumed to be present.
+Bot moves anywhere inside the greenhouse, takes photos and videos of plants, communicates with greenhouse 
+controller, monitors plant growth, harvests crops and alerts user when necessary.
+User interacts with the Bot to monitor greenhouse or to maneuver Bot to perform certain 
 tasks in realtime.
-There are two Android Apps -- User App and Controller App. User App is downloaded into user's phone while Controller
-App goes into Bot's phone.
 
 % Generated with LaTeXDraw 2.0.8
-% Tue Sep 25 01:16:26 IST 2012
+% Sun Oct 07 11:16:48 IST 2012
 % \usepackage[usenames,dvipsnames]{pstricks}
 % \usepackage{epsfig}
 % \usepackage{pst-grad} % For gradients
@@ -120,16 +120,16 @@ App goes into Bot's phone.
 \psline[linewidth=0.04cm](11.0,-0.9)(7.0,-0.9)
 \psline[linewidth=0.04cm](7.0,-0.9)(7.0,-2.7)
 \psline[linewidth=0.04cm](7.0,-2.7)(8.0,-2.7)
-\psarc[linewidth=0.04](9.9,-2.0){1.1}{280.0}{320.0}
-\psline[linewidth=0.04cm](8.2,1.5)(8.2,-0.9)
+\psarc[linewidth=0.04](9.9,-2.0){1.1}{-80.0}{-40.0}
+\psline[linewidth=0.04cm](8.2,1.5)(8.2,0.5)
 \psline[linewidth=0.04cm](8.2,1.5)(8.8,2.1)
-\psline[linewidth=0.04cm](8.8,2.1)(8.8,-0.3)
-\psline[linewidth=0.04cm](8.8,-0.3)(8.2,-0.9)
+\psline[linewidth=0.04cm](8.8,2.1)(8.8,1.1)
+\psline[linewidth=0.04cm](8.8,1.1)(8.2,0.5)
 \psline[linewidth=0.04cm](8.2,1.5)(7.8,1.5)
-\psline[linewidth=0.04cm](7.8,1.5)(7.8,-0.9)
+\psline[linewidth=0.04cm](7.8,1.5)(7.8,0.5)
 \psline[linewidth=0.04cm](7.8,1.5)(8.4,2.1)
 \psline[linewidth=0.04cm](8.4,2.1)(8.8,2.1)
-\psline[linewidth=0.04cm](7.6,-0.3)(7.8,-0.3)
+\psline[linewidth=0.04cm](7.6,-0.3)(8.0,-0.3)
 \psline[linewidth=0.04cm](9.8,-0.1)(9.8,-0.7)
 \psline[linewidth=0.04cm](9.8,-0.1)(10.4,-0.1)
 \psline[linewidth=0.04cm](10.4,-0.1)(10.4,-0.7)
@@ -147,7 +147,7 @@ App goes into Bot's phone.
 \psline[linewidth=0.04cm](10.6,0.1)(10.4,-0.1)
 \psline[linewidth=0.04cm](11.6,1.9)(10.6,0.1)
 \psline[linewidth=0.04cm](11.6,-0.3)(10.6,-0.3)
-\psline[linewidth=0.04cm](9.8,-0.3)(8.8,-0.3)
+\psline[linewidth=0.04cm](9.8,-0.3)(8.6,-0.3)
 \psellipse[linewidth=0.04,dimen=outer](8.5,1.3)(0.1,0.2)
 \psline[linewidth=0.04cm](14.2,3.1)(14.4,3.3)
 \psline[linewidth=0.04cm](14.4,3.3)(14.4,2.9)
@@ -170,7 +170,7 @@ App goes into Bot's phone.
 \psline[linewidth=0.04cm,linestyle=dashed,dash=0.16cm 0.16cm](2.2,-1.3)(8.2,4.1)
 \psline[linewidth=0.04cm,linestyle=dashed,dash=0.16cm 0.16cm](2.2,-2.9)(10.2,-4.9)
 \usefont{T1}{ptm}{m}{n}
-\rput(8.483438,2.405){Android Phone}
+\rput(8.616563,2.405){Mounted camera}
 \usefont{T1}{ptm}{m}{n}
 \rput(9.697344,-1.195){FireBird Bot}
 \usefont{T1}{ptm}{m}{n}
@@ -181,52 +181,55 @@ App goes into Bot's phone.
 \rput(14.121718,0.205){Circular Saw}
 \psline[linewidth=0.04cm,arrowsize=0.05291667cm 2.0,arrowlength=1.4,arrowinset=0.4]{->}(11.0,3.5)(11.0,1.3)
 \psline[linewidth=0.04cm,arrowsize=0.05291667cm 2.0,arrowlength=1.4,arrowinset=0.4]{<-}(14.4,2.5)(14.4,0.5)
+\psline[linewidth=0.04cm](7.8,0.5)(8.2,0.5)
+\psline[linewidth=0.04cm](8.6,0.9)(8.6,-0.5)
+\psline[linewidth=0.04cm](8.4,0.7)(8.4,-0.7)
+\psline[linewidth=0.04cm](8.0,0.5)(8.0,-0.7)
+\psline[linewidth=0.04cm](8.0,-0.7)(8.4,-0.7)
+\psline[linewidth=0.04cm](8.4,-0.7)(8.6,-0.5)
 \end{pspicture} 
 }
 
 \subsection{Product Functions}
 \begin{itemize}
- \item Autonomous greenhouse control with alerts
+ \item Accurate and autonomous Bot guidance system
  \item Realtime remote monitoring of multiple greenhouses
- \item Remotely controlled crop harvesting using Bot
+ \item Remotely controlled crop harvesting using the Bot
 \end{itemize}
 
 \subsection{User Characteristics}
-User's Android phone offers GUI to connect to desired greenhouse. GUI shall report status of that greenhouse on
-successful connection. User may change settings of greenhouse controller or may optionally to choose to maneuver 
-Bot to get closer look at the plants. Bot will stream live video from greenhouse to the user.
-User has full control over the Bot.
+User's Android phone offers GUI to connect to desired greenhouse Bot. GUI shows the map of the greenhouseon
+the screen and the current location of the Bot. User clicks at the certain location on the map
+and automatic Bot guidance system moves the Bot to desired location in the greenhouse. User gets live video stream
+from the Bot. User can switch Bot control to manual mode to get full control over the Bot. This is useful to get 
+closer look at the plants, use robotic arm to harvest crops and in emergency situations.
 
 \subsection{Constraints}
-Greenhouse settings (values of parameters like desired sunlight, humidity, etc.) must be supplied by user.
 Bot does not intelligently detect nutrient deficiency, ailing plants, pest infestation, ripening of harvest, etc.
 Bot does not automatically harvest crops. User must maneuver Bot manually.
 Bot movement area in greenhouse is bounded by ZigBee and WiFi range.
 
 \subsection{Assumptions and Dependencies}
 The ATmega2560 can execute HEX files. User can operate Android Phone. WiFi network is available at greenhouse.
-Cell phone network is available at greenhouse to send emergency alerts over SMS. 
 
 \subsection{Requirements Subsets}
 \begin{itemize}
  \item FireBird V
- \item Spark V 
- \item Two Android phones
+ \item Android phone
+ \item Mounted video camera with WiFi
  \item WiFi access point with Internet connectivity
- \item Humidity sensor
- \item Light Intensity sensor
  \item Robotic arm with circular saw
 \end{itemize}
 
 \section{Details}
 \subsection{Functionality}
 \begin{enumerate}
- \item Greenhouse controller autonomously maintains light and humidity requirements
- \item User receives emergency alert over SMS if above task fails
- \item User remotely connects to desired greenhouse and get its status summary
- \item User receives live streaming video from the Bot
+ \item User remotely connects to desired greenhouse.
+ \item User clicks on the map on phone screen and automatic Bot guidance system maneuvers the Bot.
+ \item User receives live streaming video from the Bot.
  \item User remotely controls Bot, uses circular saw to cut fruits and vegetables from branches 
- which drop into collector below
+ which drop into collector below.
+ \item User gets energy estimates for each of the above task.
 \end{enumerate}
 
 \subsection{Non Functional Requirements}
@@ -244,23 +247,22 @@ then only that file needs to be changed and not the entire logic.
 
 
 \subsection{Design Constraints}
-There is only one Bot in a greenhouse. User cannot control more than one Bot at a time.
-Area of greenhouse is determined by ZigBee range
+User cannot control more than one Bot at a time. Area of greenhouse is determined by ZigBee range
 
 \section{Interfaces}
 \subsection{User Interfaces}
 User App offers graphical interface to the user on the phone. User App must be downloaded and installed.
-User App initially shows list of greenhouses to connect to. On successful connection, user has three options
-on the screen. First option presents current status summary, second one lets user change greenhouse controller's settings
-and third one shows video and controls Bot.
+User App initially shows list of greenhouses to connect to. On successful connection, user gets screens showing
+the greenhouse map, video stream, list of tasks that Bot can perform, Bot control interface and Bot battery level
+indicator.
 
 \subsection{Hardware Interfaces}
 \begin{enumerate}
  \item ATmega2560: Master Microcontroller in FireBird V
  \item ATmega8: Slave Microcontroller in FireBird V
- \item Spark V microcontroller
  \item Power Supply: External 7.4V, 1800mAh Lithium Polymer Battery
  \item FireBird and Android interface
+ \item Camera and Android interface
 \end{enumerate}
 
 \subsection{Software Interfaces}
@@ -273,22 +275,21 @@ and third one shows video and controls Bot.
 
 \subsection{Communications Interfaces}
 \begin{enumerate}
- \item WiFi: Connects two Android phones
- \item GSM: Sends SMS alert
+ \item WiFi: Connects WiFi camera with user's Android phone
  \item ZigBee: Connects FireBird and Spark V
- \item IOIO: Connects Android phone and FireBird
-\end{enumerate}
+ \end{enumerate}
 
 \section{Quality Control}
 Quality of the project is judged with test cases specified below:
 \begin{enumerate}
- \item[Test \#1]: Set light parameter of greenhouse to 100\%. This shall completely remove sun shades.
- \item[Test \#2]: Whenever humidity goes above specified range, air blowers turn on.
- \item[Test \#3]: Connect to greenhouse from user's phone. Connection should succeed if everything is correctly configured.
- \item[Test \#4]: User App shall display current status summary correctly
- \item[Test \#5]: User App shall stream video from Bot correctly
- \item[Test \#6]: User should be able to control Bot using phone 
- \item[Test \#7]: User should be able to cut fruits using robotic arm with circular saw
+ \item[Test \#1]: Automatic bot guidance system correctly moves the Bot to desired location.
+ \item[Test \#2]: User App correctly shows video from the Bot.
+ \item[Test \#3]: Greenhouse monitor task autonomously sends photos/videos to the user while scouting greenhouse.
+ \item[Test \#4]: User can remotely control Bot using the phone.
+ \item[Test \#5]: User can cut fruits/vegetables using robotic arm with circular saw.
+ \item[Test \#6]: Energy consumption estimates for fully automatic tasks are \emph{fairly} correct.
+ \item[Test \#7]: Energy consumption estimates for partially automatic tasks are notified to user before task begins.
+ \item[Test \#8]: Build battery recharge station, if time permits for bonus credit.
  \end{enumerate}
 
 \section{Risk Management}
@@ -302,7 +303,30 @@ Tasks that may go wrong and workarounds are specified below.
  \item Internet is down.
  \item[] \emph{Workaround}: User should go to greenhouse and use LAN to connect to Bot.
  \item FireBird runs out of battery power.
- \item[] \emph{Workaround}: Monitor battery level. Alert user to guide Bot to recharge socket when battery is low. 
+ \item[] \emph{Workaround}: Monitor battery level. Obtain as precise energy estimates as possible to avoid such situation.
+ Do not start the task if its estimated power requirement is more than currently available battery power.
+\end{enumerate}
+
+\section{Performance}
+\subsection{Functional}
+Functional performance of the project is based on how well it carries out given task. 
+These are four tasks on which functional performance depends:
+\begin{enumerate}
+ \item Bot guidance system is automatic $\Rightarrow$ No manual intervention needed for moving the Bot.
+ \item Bot guidance system is accurate $\Rightarrow$ Error in location does not exceed known limits.
+ \item Greenhouse monitoring is automatic $\Rightarrow$ Bot movement and photos/video capturing is automatic.
+ User still needs to detect nutrient deficiency, ailing plants, pest infestation, ripening of harvest, etc. from
+ the photos/videos presented to him/her.
+ \item Harvesting is semi-automatic $\Rightarrow$ User controls the Bot remotely for harvesting with live video on phone's screen.
+\end{enumerate}
+
+\subsection{Energy}
+Each of the tasks, that the Bot performs, needs battery power. We list energy specific perform parameters as below:
+\begin{enumerate}
+ \item Bot estimates energy required for each task with \emph{fairly good} accuracy.
+ \item Bot switches off hardware not necessary for the task and conserves battery power.
+ \item In manual mode, Bot informs user about current battery level and minimum safe battery level needed to 
+ reach to battery recharge station.
 \end{enumerate}
 
 \addcontentsline{toc}{section}{References}
