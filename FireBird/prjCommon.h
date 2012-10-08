@@ -19,6 +19,7 @@
 // #define INT_UNLOCK()	
 
  typedef unsigned char  BYTE;
+ typedef unsigned int  	UINT;
  #ifndef NULL
  #define NULL 			(void*)0
  #endif
