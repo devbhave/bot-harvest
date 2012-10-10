@@ -34,10 +34,11 @@
 		ADC_IR_RANGE4,
 		ADC_IR_RANGE5,
 		ADC_SERVO_POD1,
-		ADC_SERVO_POD1	
+		ADC_SERVO_POD1,
+		ADC_LAST
 	};
 
-	char strChannel[16][20] = {
+	char strChannel[17][20] = {
 		"ADC_BATTERY_VOLTAGE",
 		"ADC_WHITE_LINE1",
 		"ADC_WHITE_LINE2",
@@ -53,7 +54,8 @@
 		"ADC_IR_RANGE4",
 		"ADC_IR_RANGE5",
 		"ADC_SERVO_POD1",
-		"ADC_SERVO_POD2"
+		"ADC_SERVO_POD2",
+		"ADC_LAST"
 	};
 
 	char buf[17];

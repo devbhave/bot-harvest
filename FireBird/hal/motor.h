@@ -22,5 +22,6 @@ extern STATUS initMotor(void);
 extern STATUS motorDirectionSet(MotorDirection direction);
 extern STATUS motorVelocitySet(BYTE leftMotor, BYTE rightMotor);
 extern STATUS motorLeftPositionEncoderInit(void (*callbackLIntr)(void));
+extern STATUS motorRightPositionEncoderInit(void (*callbackRIntr)(void));
  #endif /* MOTOR_H */
  

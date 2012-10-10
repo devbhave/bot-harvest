@@ -39,6 +39,7 @@
 			buzzerOn();
 			_delay_ms(500);
 			buzzerOff();
+			_delay_ms(500);
 		}
 	}	
  }

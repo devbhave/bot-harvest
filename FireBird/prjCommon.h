@@ -20,6 +20,7 @@
 
  typedef unsigned char  BYTE;
  typedef unsigned int  	UINT;
+ typedef unsigned long int 	ULINT;
  #ifndef NULL
  #define NULL 			(void*)0
  #endif

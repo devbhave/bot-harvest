@@ -87,8 +87,30 @@ STATUS motorLeftPositionEncoderInit(void (*callbackLIntr)(void)) {
 	return STATUS_OK;
 }
 
+STATUS motorRightPositionEncoderInit(void (*callbackRIntr)(void)) {
+
+	/* Check if argument is invalid or callback is already registered */
+
+	if(callbackRIntr == NULL || rposIsr != NULL)
+		return !STATUS_OK;
+		
+	INT_LOCK();
+	EICRB = EICRB | 0x08;	/* INT5 is set to falling edge */
+	EIMSK = EIMSK | 0x20;	/* Enable INT5 */
+	INT_UNLOCK();
+	
+	rposIsr = callbackRIntr;
+	return STATUS_OK;
+}
+
 ISR(INT4_vect) {
 	if(lposIsr) {
 		(*lposIsr)();
+	}
+}
+
+ISR(INT5_vect) {
+	if(rposIsr) {
+		(*rposIsr)();
 	}
 }
