@@ -33,6 +33,7 @@ static void timer5Init(void) {
     TCCR5B = 0x0B;  //WGM12=1; CS12=0, CS11=1, CS10=1 (Prescaler=64)
 }
 
+ /* Interrupt safe */
  STATUS initMotor(void) {
     /* Configure pins */
     
@@ -47,6 +48,7 @@ static void timer5Init(void) {
     return STATUS_OK;
  }
  
+ /* Interrupt unsafe */
  STATUS motorDirectionSet(MotorDirection direction) { 
     BYTE PortARestore = 0;
 
@@ -62,6 +64,7 @@ static void timer5Init(void) {
     return STATUS_OK;
  }
  
+ /* Interrupt unsafe */
  STATUS motorVelocitySet(BYTE leftMotor, BYTE rightMotor) {
 	INT_LOCK();
     OCR5AL = leftMotor;
@@ -71,7 +74,8 @@ static void timer5Init(void) {
     return STATUS_OK;
  }
  
-STATUS motorLeftPositionEncoderInit(void (*callbackLIntr)(void)) {
+ /* Interrupt unsafe */
+ STATUS motorLeftPositionEncoderInit(void (*callbackLIntr)(void)) {
 
 	/* Check if argument is invalid or callback is already registered */
 
@@ -87,6 +91,7 @@ STATUS motorLeftPositionEncoderInit(void (*callbackLIntr)(void)) {
 	return STATUS_OK;
 }
 
+/* Interrupt unsafe */
 STATUS motorRightPositionEncoderInit(void (*callbackRIntr)(void)) {
 
 	/* Check if argument is invalid or callback is already registered */
@@ -101,6 +106,24 @@ STATUS motorRightPositionEncoderInit(void (*callbackRIntr)(void)) {
 	
 	rposIsr = callbackRIntr;
 	return STATUS_OK;
+}
+
+/* Interrupt safe */
+void motorLeftPositionEncoderInterruptConfig(UINT state) {
+		
+	if(state != INTR_OFF)
+		EIMSK = EIMSK | 0x10;	/* Enable INT4 */
+	else
+		EIMSK = EIMSK & 0xEF;	/* Disable INT4 */	
+}
+
+/* Interrupt safe */
+void motorRightPositionEncoderInterruptConfig(UINT state) {
+		
+	if(state != INTR_OFF)
+		EIMSK = EIMSK | 0x20;	/* Enable INT5 */
+	else
+		EIMSK = EIMSK & 0xDF;	/* Disable INT5 */
 }
 
 ISR(INT4_vect) {

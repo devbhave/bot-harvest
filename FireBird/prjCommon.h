@@ -15,12 +15,17 @@
  #define STATUS_OK      0
  #define INT_LOCK()		cli()
  #define INT_UNLOCK()	sei()
-// #define INT_LOCK()		
-// #define INT_UNLOCK()	
+ #define INTR_ON		1
+ #define INTR_OFF		0
+ #define MIN(x, y)		(((x) < (y))? (x):(y))
+ #define MAX(x, y)		(((x) < (y))? (y):(x))
+ #define TRUE			1
+ #define FALSE			0
 
  typedef unsigned char  BYTE;
  typedef unsigned int  	UINT;
  typedef unsigned long int 	ULINT;
+ typedef unsigned int  	BOOL;
  #ifndef NULL
  #define NULL 			(void*)0
  #endif
