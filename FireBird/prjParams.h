@@ -7,6 +7,10 @@
  #ifndef PRJ_PARAMS_H
  #define PRJ_PARAMS_H
 
- #define FCPU 11059200ul	/* CPU Frequency in Hertz */
+ #ifndef F_CPU
+ #define F_CPU 14745600ul	/* CPU Frequency in Hertz */
+ #endif /* F_CPU */
+
+ #define MOTOR_SAFETY_DELAY    1000
  #endif /* PRJ_PARAMS_H */
  

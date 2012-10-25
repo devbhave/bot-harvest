@@ -21,6 +21,7 @@ typedef enum TagMotorDirection {
 extern STATUS initMotor(void);
 extern STATUS motorDirectionSet(MotorDirection direction);
 extern STATUS motorVelocitySet(BYTE leftMotor, BYTE rightMotor);
+extern STATUS motorVelocityGet(BYTE *leftMotor, BYTE *rightMotor);
 extern STATUS motorLeftPositionEncoderInit(void (*callbackLIntr)(void));
 extern STATUS motorRightPositionEncoderInit(void (*callbackRIntr)(void));
 extern void motorLeftPositionEncoderInterruptConfig(UINT state);

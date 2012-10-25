@@ -7,6 +7,7 @@
  #include <prjParams.h>
  #include <prjCommon.h>
  #include "motor.h"
+ #include <assert.h>
 
 static void (*lposIsr) (void); 
 static void (*rposIsr) (void);
@@ -74,6 +75,19 @@ static void timer5Init(void) {
     return STATUS_OK;
  }
  
+  /* Interrupt unsafe */
+ STATUS motorVelocityGet(BYTE *leftMotor, BYTE *rightMotor) {
+ 	ASSERT(leftMotor != NULL);
+	ASSERT(rightMotor != NULL);
+
+	INT_LOCK();
+    *leftMotor = OCR5AL;
+    *rightMotor = OCR5BL;
+    INT_UNLOCK();
+	
+    return STATUS_OK;
+ }
+
  /* Interrupt unsafe */
  STATUS motorLeftPositionEncoderInit(void (*callbackLIntr)(void)) {
 
