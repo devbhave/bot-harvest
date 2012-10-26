@@ -1,3 +1,5 @@
+ #include <stdio.h>
+ #include <string.h>
  #include <prjParams.h>
  #include <prjCommon.h>
  #include <hal/adc.h>
@@ -6,19 +8,15 @@
  #include <hal/buzzer.h>
  #include <hal/zigbee.h>
  #include <guidanceSystem.h>
+ #include <fileSystem.h>
  #include <whiteLineFollower.h>
  #include <assert.h>
- #include <stdio.h>
- #include <string.h>
+ 
 
  int main() {
     Map thisMap;
 	STATUS ret;
 
-	initZigbee();
-
-	PRINT("Initializing the harware...\r\n");
-	
 	/* Initialize hardware */
 	ret = initLcd();
 	ASSERT(ret == STATUS_OK);
@@ -29,12 +27,16 @@
 	ret = initZigbee();
 	ASSERT(ret == STATUS_OK);
 
-	/* Initialize software libraries */
+	/* Initialize software libraries */	
+
+	ret = initFileSystem();
+	ASSERT(ret == STATUS_OK);
 	ret = initWhiteLineFollower();
 	ASSERT(ret == STATUS_OK);
-    ret = initBotGuidanceSystem(&thisMap);
+    ret = initBotGuidanceSystem(MAP_FILE, &thisMap);
 	ASSERT(ret == STATUS_OK);
 
+    printf("\nMap summary:\n");
 	printMap(&thisMap);
 		
 	/* Perform task */

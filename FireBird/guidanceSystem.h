@@ -7,7 +7,7 @@
  #define EPSILON 		5	/* Minimum error in mm */
  #define LOC_ERR_PER_METRE  30  /* In mm */
  #define LOC_ERR_FOR_DIST_MM(x) ((x) * LOC_ERR_PER_METRE / 100)
- #define MAX_NODES      10  /* Maximum nodes supported in any graph */
+ #define MAX_NODES      20  /* Maximum nodes supported in any graph */
  #define INFINITY       0xFFFF/2
  
  typedef struct tagBotLocation {
@@ -35,5 +35,6 @@
     SOUTHWARD = 3
  } BotOrientation;
 
- STATUS initBotGuidanceSystem(Map *pMap);
+ STATUS initBotGuidanceSystem(FILE *fp, Map *pMap);
  STATUS gotoPosition(Map *pMap, UINT posX, UINT posY);
+ void printMap(Map *pMap);

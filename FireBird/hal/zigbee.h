@@ -8,5 +8,7 @@
  #define ZIGBEE_H
 extern STATUS initZigbee(void);
 extern STATUS zigbeeSend(char *data, UINT size);
+extern int zigbeeSendByte(char u8Data, FILE *stream);
+extern int zigbeeReceiveByte(FILE *stream);
  #endif /* ZIGBEE_H */
  

@@ -13,6 +13,7 @@
  #include <hal/zigbee.h>
  #include <guidanceSystem.h>
  #include <whiteLineFollower.h>
+ #include <fileSystem.h>
  #include <assert.h>
  #include <string.h>
  
@@ -85,40 +86,85 @@
 	}
  }
 
- static STATUS loadMap(Map *map) {
+ static STATUS loadMap(FILE *fp, Map *map) {
     UINT idx, idx2;
-	
+	UINT nodeA, nodeB;
+	char ch;
+	ULINT magX, magY;
+
+	ASSERT(fp != NULL);
 	ASSERT(map != NULL);
 
-    map->nodeCount = 4;
-    
-    map->nodeList[0].posX = 0;
-    map->nodeList[0].posY = 0;
-    map->nodeList[0].isCheckpoint = 1;
+	printf("Loading map from file...\n");
 
-    map->nodeList[1].posX = 203;
-    map->nodeList[1].posY = 0;
-    map->nodeList[1].isCheckpoint = 1;
+	/* No. of nodes in the graph */
 
-    map->nodeList[2].posX = 203;
-    map->nodeList[2].posY = 203;
-    map->nodeList[2].isCheckpoint = 1;
+	fscanf(fp, "%d", &map->nodeCount);    
+    ASSERT(map->nodeCount < MAX_NODES);
 
-    map->nodeList[3].posX = 0;
-    map->nodeList[3].posY = 203;
-    map->nodeList[3].isCheckpoint = 1;
+    printf("Map Nodes: %d\n", map->nodeCount);
+    printf("\nNode List:\n");
+	
+	/* Read node list with their co-ordinate information */    
 
+	for(idx = 0; idx < map->nodeCount; idx++) {
+		fscanf(fp, "%d %d %c", &map->nodeList[idx].posX, &map->nodeList[idx].posY, &ch);
+	    if(ch == 'c' || ch == 'C')
+	        map->nodeList[idx].isCheckpoint = 1;
+	    else
+    	    map->nodeList[idx].isCheckpoint = 0;
+        
+        if(map->nodeList[idx].isCheckpoint != 0) {
+            printf("Node[%u]: (%u, %u) C\n", idx, map->nodeList[idx].posX, map->nodeList[idx].posY);
+        }
+        else {
+            printf("Node[%u]: (%u, %u) N\n", idx, map->nodeList[idx].posX, map->nodeList[idx].posY);
+        }
+	}
+
+	/* Initialize weightMatrix */
     for(idx = 0; idx < map->nodeCount; idx ++) {
         for(idx2 = 0; idx2 < map->nodeCount; idx2 ++) {
             map->weightMatrix[idx][idx2] = INFINITY;
         }
     }
     
-    /* Assign weights */
-    map->weightMatrix[0][1] = map->weightMatrix[1][0] = 203;
-    map->weightMatrix[1][2] = map->weightMatrix[2][1] = 203;
-    map->weightMatrix[2][3] = map->weightMatrix[3][2] = 203;
-    map->weightMatrix[0][3] = map->weightMatrix[3][0] = 203;
+    printf("\nEdge List:\n");
+
+	/* Read edges from the map and calculate their weights using co-ordinates */
+    fscanf(fp, "%d %d", &nodeA, &nodeB);
+
+    while (!(nodeA == 0 && nodeB == 0)) {
+		/* nodeA = 0, nodeB = 0 is the end marker entry in map file */
+		
+		ASSERT(nodeA >= 0);
+		ASSERT(nodeB >= 0);
+		ASSERT(nodeA < MAX_NODES);
+		ASSERT(nodeB < MAX_NODES);
+
+		/* magX is distance along X-axis */
+
+        if(map->nodeList[nodeA].posX > map->nodeList[nodeB].posX)
+            magX = map->nodeList[nodeA].posX - map->nodeList[nodeB].posX;
+        else
+            magX = map->nodeList[nodeB].posX - map->nodeList[nodeA].posX;
+
+		/* magY is distance along Y-axis */
+
+		if(map->nodeList[nodeA].posY > map->nodeList[nodeB].posY)
+            magY = map->nodeList[nodeA].posY - map->nodeList[nodeB].posY;
+        else
+            magY = map->nodeList[nodeB].posY - map->nodeList[nodeA].posY;
+
+        /* Fill edge weights as Euclidean distances */
+        map->weightMatrix[nodeA][nodeB] = map->weightMatrix[nodeB][nodeA] =         
+        intSqrt(magX * magX + magY * magY);
+
+        /* Read next edge */
+        fscanf(fp, "%d %d", &nodeA, &nodeB);
+
+        printf("%d <---> %d\n", nodeA, nodeB);
+	}
 
     for(idx = 0; idx < map->nodeCount; idx ++) {
         for(idx2 = 0; idx2 < map->nodeCount; idx2 ++) {
@@ -126,7 +172,11 @@
         }
     }
     
+    printf("Map loaded successfully!\n");
+
+    printf("Computing all shortest paths over the map...\n");
     floydWarshall(map);
+    printf("Finished computing all shortest paths.\n");
     
 	return STATUS_OK;
  }
@@ -176,8 +226,9 @@ static UINT getNearestNode(Map *pMap, UINT x, UINT y){
     return minIdx;
 }
  
- STATUS initBotGuidanceSystem(Map *pMap) {
- 
+ STATUS initBotGuidanceSystem(FILE *fp, Map *pMap) {
+ 	
+	ASSERT(fp != NULL); 
     ASSERT(pMap != NULL);
     
 	/* Initialize current location */
@@ -188,7 +239,7 @@ static UINT getNearestNode(Map *pMap, UINT x, UINT y){
 	
 	/* Load map */
 	
-	if(loadMap(pMap) != STATUS_OK) {
+	if(loadMap(fp, pMap) != STATUS_OK) {
 		/* Error loading map */
 		return !STATUS_OK;
 	}

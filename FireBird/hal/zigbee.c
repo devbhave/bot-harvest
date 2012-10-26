@@ -119,10 +119,11 @@ Commands:
   http://creativecommons.org/licenses/by-nc-sa/3.0/legalcode
 
 ********************************************************************************/
-
+ 
+ #include <stdio.h>
  #include <prjParams.h>
  #include <prjCommon.h>
- #include <hal/zigbee.h>
+ #include <hal/zigbee.h> 
  #include <assert.h>
 
 unsigned char data; //to store received data from UDR1
@@ -180,15 +181,27 @@ STATUS zigbeeSend(char *data, UINT size) {
 	return STATUS_OK;
 }
 
-#if 0
-//Main Function
-int main(void)
+int zigbeeSendByte(char u8Data, FILE *stream)
 {
-	char msg[] = "Hello World!\n";
-	
-	initZigbee();
-	
-	while(1) { zigbeeSend(msg, sizeof(msg)); _delay_ms(1000);}
+   if(u8Data == '\n')
+   {
+      zigbeeSendByte('\r', 0);
+   }
+	//Wait while previous byte is completed
+	while(!(UCSR0A&(1<<UDRE0))){};
+	// Transmit data
+	UDR0 = u8Data;
+	return 0;
 }
 
-#endif
+int zigbeeReceiveByte(FILE *stream)
+{
+	BYTE u8Data;
+	// Wait for byte to be received
+	while(!(UCSR0A&(1<<RXC0))){};
+	u8Data=UDR0;
+	//echo input data
+	zigbeeSendByte(u8Data,stream);
+	// Return received data
+	return u8Data;
+}
