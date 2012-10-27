@@ -40,7 +40,7 @@
 	printMap(&thisMap);
 		
 	/* Perform task */
-    ret = gotoPosition(&thisMap, 0, 203);
+    ret = gotoPosition(&thisMap, 609, 609);
 	ASSERT(ret == STATUS_OK);
 	//rotateRight(180);
 

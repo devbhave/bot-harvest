@@ -21,8 +21,7 @@
  #define MAX(x, y)		(((x) < (y))? (y):(x))
  #define TRUE			1
  #define FALSE			0
- #define PRINT(x)		zigbeeSend(x, strlen(x)+1);
-
+ 
  typedef unsigned char  BYTE;
  typedef unsigned int  	UINT;
  typedef unsigned long int 	ULINT;

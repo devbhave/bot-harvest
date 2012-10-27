@@ -90,7 +90,7 @@
  	return STATUS_OK;
  }
 
- STATUS moveForwardFollwingLineByDistance(ULINT distInMm) {
+ STATUS moveForwardFollwingLineByDistance(ULINT distInMm, BOOL stop) {
 	ULINT posCount;
 	BOOL checkPoint;
 	UINT lVel, rVel;	
@@ -122,8 +122,10 @@
 	motorLeftPositionEncoderInterruptConfig(INTR_OFF); /* Mask interrupt */
 	motorRightPositionEncoderInterruptConfig(INTR_OFF); /* Mask interrupt */
 
-	motorDirectionSet(STOP);
-	_delay_ms(MOTOR_SAFETY_DELAY);
+    if(stop == TRUE){
+	    motorDirectionSet(STOP);
+	    _delay_ms(MOTOR_SAFETY_DELAY);
+    }
 
 	return STATUS_OK;
  }
@@ -191,7 +193,7 @@
  	return STATUS_OK;
  }
 
-STATUS moveForwardFollwingLineByCheckpoint(UINT chkpts) {
+STATUS moveForwardFollwingLineByCheckpoint(UINT chkpts, BOOL stop) {
 	BOOL checkPoint, ignoreCheckPoint;
 	UINT lVel, rVel;	
 	STATUS ret;
@@ -222,8 +224,8 @@ STATUS moveForwardFollwingLineByCheckpoint(UINT chkpts) {
 		//_delay_ms(DELAY_COUNT);
 	}
 
-	motorDirectionSet(STOP);
-	_delay_ms(MOTOR_SAFETY_DELAY);
-
+    
+    moveForwardFollwingLineByDistance(75, stop);
+	
 	return STATUS_OK;
  }

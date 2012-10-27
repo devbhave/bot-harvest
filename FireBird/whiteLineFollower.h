@@ -26,6 +26,6 @@
 
  STATUS initWhiteLineFollower(void);
  STATUS rotateBot(MotorDirection dir, UINT angle);
- STATUS moveForwardFollwingLineByCheckpoint(UINT chkpts);
- STATUS moveForwardFollwingLineByDistance(ULINT distInMm);
+ STATUS moveForwardFollwingLineByCheckpoint(UINT chkpts, BOOL stop);
+ STATUS moveForwardFollwingLineByDistance(ULINT distInMm, BOOL stop);
  

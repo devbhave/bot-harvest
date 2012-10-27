@@ -30,7 +30,7 @@
 	initMotor();
 	initAdc();
 	initWhiteLineFollower();
-
+    
 	for(i = 0; i < 8; i ++) {
 		moveForwardFollwingLineByCheckpoint(2);
 		_delay_ms(1000);
