@@ -55,4 +55,6 @@
  
  STATUS initBotGuidanceSystem(FILE *fp, Map *pMap);
  STATUS gotoPosition(Map *pMap, UINT posX, UINT posY);
+ STATUS gotoForward(Map *pMap, UINT distInMm);
  void printMap(Map *pMap);
+ 

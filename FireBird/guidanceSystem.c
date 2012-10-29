@@ -11,7 +11,7 @@
  #include <whiteLineFollower.h>
  #include <assert.h>
  #include <string.h>
- 
+
  /* Globals */
  
  static BotLocation thisBotLocation;
@@ -803,9 +803,38 @@ STATUS gotoPosition(Map *pMap, UINT posX, UINT posY) {
         }
     }
 
-    ASSERT(thisBotLocation.posX = posX && thisBotLocation.posY == posY);
+    ASSERT(thisBotLocation.posX == posX && thisBotLocation.posY == posY);
     
 	return STATUS_OK;
+}
+
+STATUS gotoForward(Map *pMap, UINT distInMm) {
+    UINT posX, posY;
+    PositionMetaInfo info;
+    STATUS ret;
+
+    ASSERT(pMap != NULL);
+    
+    posX = thisBotLocation.posX;
+    posY = thisBotLocation.posY;
+    
+    switch(thisBotOrientation) {
+        case EASTWARD: posX += distInMm; break;
+        case NORTHWARD: posY += distInMm; break;
+        case WESTWARD: posX -= distInMm; break;
+        case SOUTHWARD: posY -= distInMm; break;
+        default: ASSERT(0);                        
+    }
+    
+    /* Check if position in on the map */
+    ret = getPositionMetaInfo(pMap, posX, posY, &info);
+    ASSERT(ret == STATUS_OK);
+
+    if(info.loc == OUTSIDE_EDGE) {
+        return !STATUS_OK;
+    }
+    
+    return gotoPosition(pMap, posX, posY);
 }
 
 void test_getPositionMetaInfo(Map *pMap) {
@@ -880,20 +909,53 @@ void test_analyzeShortestRoute(Map *pMap) {
 
 }
 
+void test_gotoPosition(Map *pMap) {
+    PositionMetaInfo info1, info2;
+    UINT idx, idx2, last, x1, y1;
+    STATUS ret;
+    UINT xCor[5000], yCor[5000];
+    UINT ort;
+    
+    idx = 0;
+    for(x1 = 0; x1 <= 700; x1 ++) {
+        for(y1 = 0; y1 <= 700; y1 ++) {
+            ret = getPositionMetaInfo(pMap, x1, y1, &info1);
+            ASSERT(ret == STATUS_OK);
+            
+            if(info1.loc == AT_NODE || info1.loc == ON_EDGE) {
+                xCor[idx] = x1;
+                yCor[idx] = y1;
+                idx ++;
+            }
+        }
+    }
+    
+    last = idx;
+    for(idx = 0; idx < last; idx ++) {
+        for(idx2 = 0; idx2 < last; idx2 ++) {
+            for(ort = 0; ort < 4; ort ++) {
+                /* Otherwise simulate goto */
+                thisBotLocation.posX = xCor[idx]; 
+                thisBotLocation.posY = yCor[idx];
+                thisBotOrientation = ort;
+                ret = gotoPosition(pMap, xCor[idx2], yCor[idx2]);
+                ASSERT(ret == STATUS_OK);
+            }
+        }
+        fprintf(stderr, "idx:%d\n", idx);        
+    }
+}
+
+
 #if 0
 int main() {
     Map thisMap;
+    STATUS ret;
+    
     initBotGuidanceSystem(stdin, &thisMap);
- 
-    thisBotLocation.posX = 53; 
-    thisBotLocation.posY = 203;
-    thisBotOrientation = WESTWARD;
-    gotoPosition(&thisMap, 417, 609);   
- 
- //   test_getShortestPath(&thisMap);
- //   test_getPositionMetaInfo(&thisMap);
-// test_analyzeShortestRoute(&thisMap);
 
+    //test_gotoPosition(&thisMap);
+    gotoForward(&thisMap, 20);
     return 0;
 }
 #endif
