@@ -619,9 +619,11 @@ STATUS setBotOrientation(BotOrientation nextOrientation) {
 
         if(rotation > 0) {
             printf("rotateBot(LEFT, %d);\n", rotation);
+			rotateBot(LEFT, rotation);
         }
         else {
             printf("rotateBot(RIGHT, %d);\n", -rotation);
+			rotateBot(RIGHT, -rotation);
         }
          
         thisBotOrientation = nextOrientation;            

@@ -10,6 +10,7 @@
  #ifndef F_CPU
  #define F_CPU 14745600ul	/* CPU Frequency in Hertz */
  #endif /* F_CPU */
+ #define BAUD 9600
 
  #define MOTOR_SAFETY_DELAY    1000
  

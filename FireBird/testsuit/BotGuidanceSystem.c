@@ -5,6 +5,7 @@
  #include <hal/adc.h>
  #include <hal/lcd.h>
  #include <hal/motor.h>
+ #include <hal/servo.h>
  #include <hal/buzzer.h>
  #include <hal/zigbee.h>
  #include <guidanceSystem.h>
@@ -16,6 +17,9 @@
  int main() {
     Map thisMap;
 	STATUS ret;
+	UINT x, y;
+	int data;
+	UINT sa1, sa2, sa3;
 
 	/* Initialize hardware */
 	ret = initLcd();
@@ -26,6 +30,9 @@
 	ASSERT(ret == STATUS_OK);
 	ret = initZigbee();
 	ASSERT(ret == STATUS_OK);
+	ret = initServo();
+	ASSERT(ret == STATUS_OK);
+
 
 	/* Initialize software libraries */	
 
@@ -38,12 +45,45 @@
 
     printf("\nMap summary:\n");
 	printMap(&thisMap);
+
+	sa1 = sa2 = sa3 = 90;
+	ret = servoSet(SERVO1, sa1);
+	ASSERT(ret == STATUS_OK);
+	ret = servoSet(SERVO2, sa2);
+	ASSERT(ret == STATUS_OK);
+	ret = servoSet(SERVO3, sa3);
+	ASSERT(ret == STATUS_OK);
 		
 	/* Perform task */
-    ret = gotoPosition(&thisMap, 609, 609);
-	ASSERT(ret == STATUS_OK);
-	//rotateRight(180);
+	while(1) {
+		/*printf("\n\nGoto:\n");
+		printf("X: ");
+		scanf("%u", &x);
+		printf("Y: ");
+		scanf("%u", &y);*/
+		x = y = 0;
+	    //ret = gotoPosition(&thisMap, x, y);
+		//ASSERT(ret == STATUS_OK);
+		
+		data = 1;
+		while(data != 'X') {
+			data = getchar();
+			switch(data) {
+			case 'L': sa1 -= 10; servoSet(SERVO1, sa1); break;
+			case 'R': sa1 += 10; servoSet(SERVO1, sa1); break;
+			case 'U': sa2 += 10; servoSet(SERVO2, sa2); break;
+			case 'D': sa2 -= 10; servoSet(SERVO2, sa2); break;
+			case 'C': servoSet(SERVO3, 0); servoSet(SERVO3, 120);
+					  servoSet(SERVO3, 0);servoSet(SERVO3, 120);
+					  break;
+			case 'F': y += 100;
+					  ret = gotoPosition(&thisMap, x, y);
+					  ASSERT(ret == STATUS_OK); break;
+            case 'I': sa2 = 90; servoSet(SERVO2, sa2); break;
+			}
+		}
 
+	}
 
 	while(1);
     return 0;
