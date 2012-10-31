@@ -8,7 +8,7 @@
  #include <prjCommon.h>
  #include <stdio.h>
  #include <string.h>
- #include "assert.h"
+ #include <assert.h>
  #include <hal/lcd.h>
  #include <hal/motor.h>
  #include <hal/buzzer.h>
@@ -17,7 +17,7 @@
 	UINT i;
 	char line[33], line1[17], line2[17];
 	
-	snprintf(line, sizeof(line), "%s:%d %s", file, lineNum, msg);
+	snprintf(line, sizeof(line), "%d: %s %s", lineNum, file, msg);
 
 	if(compResult == 0) {
 		/* Halt entire system */

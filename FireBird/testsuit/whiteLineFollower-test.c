@@ -30,11 +30,14 @@
 	initMotor();
 	initAdc();
 	initWhiteLineFollower();
+    initPower();
     
+    moveForwardFollwingLineByDistance(1000ul, TRUE);
+    while(1);
 	for(i = 0; i < 8; i ++) {
-		moveForwardFollwingLineByCheckpoint(2);
+		moveForwardFollwingLineByCheckpoint(2, 1);
 		_delay_ms(1000);
-		moveForwardFollwingLineByDistance(80ul);
+		moveForwardFollwingLineByDistance(1000ul, 1);
 		_delay_ms(1000);
 		rotateBot(RIGHT, 90);
 		_delay_ms(1000);
