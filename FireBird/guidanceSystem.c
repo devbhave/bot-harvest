@@ -636,29 +636,99 @@ STATUS gotoPosition(Map *pMap, UINT posX, UINT posY) {
     BotLocation nextLocation;
     BotOrientation nextOrientation, lookAheadOrientation;
     Path shortestPath;
-    PositionMetaInfo locInfo;
+    PositionMetaInfo locInfo, destLocInfo;
 	STATUS ret;
 	UINT dist;
   
     ASSERT(pMap != NULL);
-  
-    /* Step #1: Get shortest path from current location to destination */
+
+	// debug start
+	printf("===============================\n");
+	printf("Current location: (%d, %d)\n", thisBotLocation.posX, thisBotLocation.posY);	
+	printf("Goto location: (%d, %d)\n", posX, posY);
+	printf("===============================\n");	
+    // debug end
+ 
+   /* Step #1: Are you already at destination ? */
+    
+    if(thisBotLocation.posX == posX && thisBotLocation.posY == posY) {
+        return STATUS_OK;
+    }
+    
+    /* Step #2: Get shortest path from current location to destination */
+    
     ret = analyzeShortestRoute(pMap, thisBotLocation.posX, thisBotLocation.posY,
                             posX, posY, &shortestPath);
     ASSERT(ret == STATUS_OK);
-    
-	// debug start
-	printf("Current location: (%d, %d)\n", thisBotLocation.posX, thisBotLocation.posY);	
-	printf("Goto location: (%d, %d)\n", posX, posY);
-	printPath(&shortestPath);
-	//debug end
 
-    /* Step #2: Go from current location to start of shortest path */
-    
     ret = getPositionMetaInfo(pMap, thisBotLocation.posX, thisBotLocation.posY, &locInfo);
     ASSERT(ret == STATUS_OK);
+
+    ret = getPositionMetaInfo(pMap, posX, posY, &destLocInfo);
+    ASSERT(ret == STATUS_OK);
+    
+	// debug start
+    printf("------ Analyzed Path -------\n");
+	printPath(&shortestPath);
+    printf("----------------------------\n");	
+	//debug end
+	
+	/* Step #3: Is your destination on the same edge? */
+	if(
+	    destLocInfo.loc == ON_EDGE && 
+	    (
+	      (
+	        locInfo.loc == AT_NODE && 
+	        (locInfo.nodeA == destLocInfo.nodeA || locInfo.nodeA == destLocInfo.nodeB)
+	      ) 
+	      ||
+	      (
+	        locInfo.loc == ON_EDGE && 
+	        (
+	          (locInfo.nodeA == destLocInfo.nodeA && locInfo.nodeB == destLocInfo.nodeB)
+	          ||
+  	          (locInfo.nodeA == destLocInfo.nodeB && locInfo.nodeB == destLocInfo.nodeA)
+  	        )	      
+	      )
+	    )
+	  )
+	{
+	    /* Destination is on same edge. Go directly there. */
+
+        dist = getEuclideanDistance(thisBotLocation.posX, thisBotLocation.posY,
+                posX, posY);
+        ASSERT(dist != 0);        
+
+        /* Set orientation */
+        ret = computeOrientation(thisBotLocation.posX, thisBotLocation.posY,
+                        posX, posY, &nextOrientation);
+        ASSERT(ret == STATUS_OK);
+        
+        ret = setBotOrientation(nextOrientation);
+        ASSERT(ret == STATUS_OK);
+        
+        /* Move Bot */
+        //ret = moveForwardFollwingLineByDistance(dist, TRUE);
+        ASSERT(ret == STATUS_OK);
+        printf("moveForwardFollwingLineByDistance(%u);\n", dist);
+        
+        /* Update location */
+        switch(nextOrientation) {
+        case EASTWARD:  thisBotLocation.posX += dist; break;
+        case NORTHWARD: thisBotLocation.posY += dist; break;
+        case WESTWARD:  thisBotLocation.posX -= dist; break;
+        case SOUTHWARD: thisBotLocation.posY -= dist; break;
+        default: ASSERT(0);
+        }
+
+        ASSERT(thisBotLocation.posX == posX && thisBotLocation.posY == posY);
+        return STATUS_OK;   
+	}
+		
+    /* Step #4: Go from current location to start of shortest path */
+    
     if(!(locInfo.loc == AT_NODE && locInfo.nodeA == shortestPath.nodes[0])) {
-        /* You are not already at source node in shortest path */
+        /* You are not already at source node in shortest path */       
         ret = computeOrientation(thisBotLocation.posX, thisBotLocation.posY,
             pMap->nodeList[shortestPath.nodes[0]].posX, 
             pMap->nodeList[shortestPath.nodes[0]].posY, &nextOrientation);
@@ -694,7 +764,7 @@ STATUS gotoPosition(Map *pMap, UINT posX, UINT posY) {
     }
 
 
-    /* Step #3: Move along shortest path */
+    /* Step #5: Move along shortest path */
 
     /* LOOP INVARIANT: Bot is standing at location of the node shortestPath.nodes[idx]
      */
@@ -703,7 +773,7 @@ STATUS gotoPosition(Map *pMap, UINT posX, UINT posY) {
 		ASSERT((thisBotLocation.posX == pMap->nodeList[shortestPath.nodes[idx]].posX) &&
 		       (thisBotLocation.posY == pMap->nodeList[shortestPath.nodes[idx]].posY));
 
-        /* Step #3.a: Retrieve next node location */
+        /* Step #5.a: Retrieve next node location */
 
         nextLocation.posX = pMap->nodeList[shortestPath.nodes[idx+1]].posX;
         nextLocation.posY = pMap->nodeList[shortestPath.nodes[idx+1]].posY;
@@ -726,7 +796,7 @@ STATUS gotoPosition(Map *pMap, UINT posX, UINT posY) {
 		printf("Next location: (%d, %d)\n", nextLocation.posX, nextLocation.posY);        
 		// debug end
 
-        /* Step #3.b: Set Bot orientation */
+        /* Step #5.b: Set Bot orientation */
         
         ret = computeOrientation(thisBotLocation.posX, thisBotLocation.posY,
                         nextLocation.posX, nextLocation.posY, &nextOrientation);
@@ -742,7 +812,7 @@ STATUS gotoPosition(Map *pMap, UINT posX, UINT posY) {
         printf("----------------------------\n");
 		// debug end
 
-        /* Step #3.c: Compute look ahead orientation */        
+        /* Step #5.c: Compute look ahead orientation */        
         /* Calculate orientation for future move. If orientation is the same,
            Bot need not stop at end of next move */
         lookAheadOrientation = UNKNOWN_ORIENTATION;
@@ -754,7 +824,7 @@ STATUS gotoPosition(Map *pMap, UINT posX, UINT posY) {
             ASSERT(ret == STATUS_OK);
         }
        
-        /* Step #3.d: Follow the white line till next node */
+        /* Step #5.d: Follow the white line till next node */
         if(lookAheadOrientation != nextOrientation) {
             printf("moveForwardFollwingLineByCheckpoint(1, STOP);\n");
             moveForwardFollwingLineByCheckpoint(1, TRUE);
@@ -775,7 +845,7 @@ STATUS gotoPosition(Map *pMap, UINT posX, UINT posY) {
     /* Bot is currently standing at end node in shortest path */
     ASSERT(thisBotLocation.posX == posX || thisBotLocation.posY == posY);
     
-    /* Step #4: Go from end of shortest path to desired location */
+    /* Step #6: Go from end of shortest path to desired location */
     dist = getEuclideanDistance(thisBotLocation.posX, thisBotLocation.posY,
                 posX, posY);
                 
@@ -842,10 +912,10 @@ void test_getPositionMetaInfo(Map *pMap) {
     PositionMetaInfo info;
     
     printf("P3\n");
-    printf("700 700\n");
+    printf("3000 3000\n");
     printf("15\n");
-    for(x = 0; x < 700; x ++) {
-        for(y = 0; y < 700; y ++) {
+    for(y = 0; y < 3000; y ++) {
+        for(x = 0; x < 3000; x ++) {
 
             //printf("(%d, %d) => ", x, y);            
             getPositionMetaInfo(pMap, x, y, &info);
@@ -853,10 +923,6 @@ void test_getPositionMetaInfo(Map *pMap) {
             switch(info.loc) {
                 case AT_NODE: printf(" 15 0 0 \n"); break;                
                 case ON_EDGE: 
-                    if((info.nodeA == 2 && info.nodeB == 6) ||
-                      (info.nodeA == 6 && info.nodeB == 2)) {
-                        printf(" 0 15 0 \n"); 
-                    }else
                     printf(" 0 0 15 \n"); 
                     break;
                 case OUTSIDE_EDGE: printf(" 0 0 0 \n"); break;
@@ -913,12 +979,12 @@ void test_gotoPosition(Map *pMap) {
     PositionMetaInfo info1, info2;
     UINT idx, idx2, last, x1, y1;
     STATUS ret;
-    UINT xCor[5000], yCor[5000];
+    UINT xCor[6000], yCor[6000];
     UINT ort;
     
     idx = 0;
-    for(x1 = 0; x1 <= 700; x1 ++) {
-        for(y1 = 0; y1 <= 700; y1 ++) {
+    for(x1 = 0; x1 <= 3000; x1 ++) {
+        for(y1 = 0; y1 <= 3000; y1 ++) {
             ret = getPositionMetaInfo(pMap, x1, y1, &info1);
             ASSERT(ret == STATUS_OK);
             
@@ -946,6 +1012,32 @@ void test_gotoPosition(Map *pMap) {
     }
 }
 
+void test_gotoPosition2(Map *pMap){
+    struct testCase {
+        UINT x1, y1, x2, y2;
+    };
+    struct testCase test[] = {
+        {2040,     0, 2040,    0},  /* AN-AN, same node */
+        {   0,   880, 2040,   880}, /* AN-AN, distinct, no intermediate node */
+        {   0,   880, 2040,    0},  /* AN-AN, distinct, one intermediate node */
+        {2040,     0, 2040,  300},  /* AN-BN, no intermediate nodes */
+        {2040,     0,    0,  200},  /* AN-BN, one intermediate node */
+        {1500,   880,    0,  880},  /* BN-AN, no intermediate nodes */
+        {1200,     0, 2040,  880},  /* BN-AN, one intermediate nodes */
+        {2040,   500, 2040,  300},  /* BN-BN, no intermediate nodes */        
+        {  20,     0, 2040,   30}   /* BN-BN, one intermediate nodes */        
+    };
+    UINT idx;
+    STATUS ret;
+    
+    for(idx = 0; idx < (sizeof(test)/sizeof(test[0])); idx ++) {
+        thisBotLocation.posX = test[idx].x1; 
+        thisBotLocation.posY = test[idx].y1;
+        thisBotOrientation = EASTWARD;
+        ret = gotoPosition(pMap, test[idx].x2, test[idx].y2);
+        ASSERT(ret == STATUS_OK);
+    }
+}
 
 #if 0
 int main() {
@@ -953,9 +1045,14 @@ int main() {
     STATUS ret;
     
     initBotGuidanceSystem(stdin, &thisMap);
+/*        thisBotLocation.posX = 0; 
+        thisBotLocation.posY = 1;
+        thisBotOrientation = EASTWARD;
+        gotoPosition(&thisMap, 1, 880);*/
 
-    //test_gotoPosition(&thisMap);
-    gotoForward(&thisMap, 20);
+    test_gotoPosition(&thisMap);
+//    test_getPositionMetaInfo(&thisMap);
+//    gotoForward(&thisMap, 20);
     return 0;
 }
 #endif
