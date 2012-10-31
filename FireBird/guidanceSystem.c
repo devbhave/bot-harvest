@@ -708,7 +708,7 @@ STATUS gotoPosition(Map *pMap, UINT posX, UINT posY) {
         ASSERT(ret == STATUS_OK);
         
         /* Move Bot */
-        //ret = moveForwardFollwingLineByDistance(dist, TRUE);
+        ret = moveForwardFollwingLineByDistance(dist, TRUE);
         ASSERT(ret == STATUS_OK);
         printf("moveForwardFollwingLineByDistance(%u);\n", dist);
         

@@ -6,18 +6,18 @@
  
  #include <prjParams.h>
  #include <prjCommon.h>
- #include "power.h"
+ #include <hal/power.h>
  
  STATUS initPower(void) {
     /* Configure MOSFET switch */
     
-    DDRH = DDRH | 0x0C; //make PORTH 3 and PORTH 1 pins as output
+    DDRH = DDRH | 0x0C; //make PORTH 3 and PORTH 2 pins as output
     PORTH = PORTH & 0xF3;   /* set PORTH 3 and PORTH 1 pins to 0 */
     DDRG = DDRG | 0x04;     /* make PORTG 2 pin as output */
     PORTG = PORTG & 0xFB;   /* set PORTG 2 pin to 0 */
     
     /* Power down all sensors */
-    powerOff(SensorGroup SG_ALL);
+    powerOff(SG_ALL);
 	return STATUS_OK;
  }
  

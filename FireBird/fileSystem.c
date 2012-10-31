@@ -9,20 +9,20 @@
  //FILE lcdStream = FDEV_SETUP_STREAM(lcdSendByte, 0, _FDEV_SETUP_WRITE);
  FILE mapStream = FDEV_SETUP_STREAM(0, mapReceiveByte, _FDEV_SETUP_READ);
 
- #if 0
+ 
  const char mapFile[] = \
 	"4 "\
 	"0   0   C "\
-	"203 0   C "\
-	"203 203 C "\
-	"0   203 C "\
+	"2040 0   C "\
+	"2040 880 C "\
+	"0   880 C "\
 	"0   1 "\
 	"1   2 "\
 	"2   3 "\
 	"3   0 "\
 	"0   0";	/* End marker for map file */
-#endif
 
+#if 0
  const char mapFile[] = \
 	"16 "\
 	"0   0   C "\
@@ -66,6 +66,7 @@
 	"7 11 "\
 	"11 15 "\
 	"0   0";	/* End marker for map file */
+#endif
 
  int mapReceiveByte(FILE *stream) {
  	static UINT filePtr = 0;
