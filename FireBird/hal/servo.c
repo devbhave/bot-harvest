@@ -9,7 +9,9 @@
  #include "servo.h"
  #include <assert.h>
 
- #define SERVO_DELAY 10
+ #define SERVO1_DELAY 150
+ #define SERVO2_DELAY 150
+ #define SERVO3_DELAY 1
  
 //TIMER1 initialization in 10 bit fast PWM mode  
 //prescale:256
@@ -68,13 +70,14 @@ STATUS initServo(void) {
 STATUS servoSet(ServoMotor servo, UINT degree) {
 	ULINT min, max;
 	BYTE data, curr;
+	UINT delay = 0;
 		
 	ASSERT(servo >= SERVO1 && servo <= SERVO3);
 	
 	switch(servo) {
-	case SERVO1: min = SERVO1_MIN; max = SERVO1_MAX; curr = OCR1AL; break;
-	case SERVO2: min = SERVO2_MIN; max = SERVO2_MAX; curr = OCR1BL; break;
-	case SERVO3: min = SERVO3_MIN; max = SERVO3_MAX; curr = OCR1CL; break;
+	case SERVO1: min = SERVO1_MIN; max = SERVO1_MAX; curr = OCR1AL; delay = SERVO1_DELAY; break;
+	case SERVO2: min = SERVO2_MIN; max = SERVO2_MAX; curr = OCR1BL; delay = SERVO2_DELAY; break;
+	case SERVO3: min = SERVO3_MIN; max = SERVO3_MAX; curr = OCR1CL; delay = SERVO3_DELAY; break;
 	default: return !STATUS_OK;
 	}
 	
@@ -83,31 +86,31 @@ STATUS servoSet(ServoMotor servo, UINT degree) {
 		while(curr < data) {
 			curr ++;
 			switch(servo) {
-			case SERVO1: OCR1AH = 0x00; OCR1AL = curr; break;
-			case SERVO2: OCR1BH = 0x00; OCR1BL = curr; break;
-			case SERVO3: OCR1CH = 0x00; OCR1CL = curr; break;
+			case SERVO1: OCR1AL = curr; OCR1AH = 0x00; break;
+			case SERVO2: OCR1BL = curr; OCR1BH = 0x00;  break;
+			case SERVO3: OCR1CL = curr; OCR1CH = 0x00;  break;
 			default: return !STATUS_OK;
 			}
-			_delay_ms(SERVO_DELAY);
+			_delay_ms(delay);
 		}
 	}
 	else {
 		while(curr > data) {
 			curr --;
 			switch(servo) {
-			case SERVO1: OCR1AH = 0x00; OCR1AL = curr; break;
-			case SERVO2: OCR1BH = 0x00; OCR1BL = curr; break;
-			case SERVO3: OCR1CH = 0x00; OCR1CL = curr; break;
+			case SERVO1: OCR1AL = curr; OCR1AH = 0x00;  break;
+			case SERVO2: OCR1BL = curr; OCR1BH = 0x00;  break;
+			case SERVO3: OCR1CL = curr; OCR1CH = 0x00;  break;
 			default: return !STATUS_OK;
 			}
-			_delay_ms(SERVO_DELAY);
+			_delay_ms(delay);
 		}
 	}	
 	
 	switch(servo) {
-	case SERVO1: OCR1AH = 0x00; OCR1AL = data; break;
-	case SERVO2: OCR1BH = 0x00; OCR1BL = data; break;
-	case SERVO3: OCR1CH = 0x00; OCR1CL = data; break;
+	case SERVO1: OCR1AL = data; OCR1AH = 0x00;  break;
+	case SERVO2: OCR1BL = data; OCR1BH = 0x00;  break;
+	case SERVO3: OCR1CL = data; OCR1CH = 0x00;  break;
 	default: return !STATUS_OK;
 	}
 	

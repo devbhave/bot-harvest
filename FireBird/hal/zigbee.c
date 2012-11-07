@@ -71,7 +71,7 @@ int zigbeeReceiveByte(FILE *stream)
 	u8Data=UDR0;
 
 	//echo input data
-	zigbeeSendByte(u8Data,stream);
+	//zigbeeSendByte(u8Data,stream);
 
 	// Return received data
 	return u8Data;

@@ -174,15 +174,15 @@
 	ASSERT(fp != NULL);
 	ASSERT(map != NULL);
 
-	printf("Loading map from file...\n");
+	//printf("Loading map from file...\n");
 
 	/* No. of nodes in the graph */
 
 	fscanf(fp, "%d", &map->nodeCount);    
     ASSERT(map->nodeCount < MAX_NODES);
 
-    printf("Map Nodes: %d\n", map->nodeCount);
-    printf("\nNode List:\n");
+    //printf("Map Nodes: %d\n", map->nodeCount);
+    //printf("\nNode List:\n");
 	
 	/* Read node list with their co-ordinate information */    
 
@@ -194,10 +194,10 @@
     	    map->nodeList[idx].isCheckpoint = 0;
         
         if(map->nodeList[idx].isCheckpoint != 0) {
-            printf("Node[%u]: (%u, %u) C\n", idx, map->nodeList[idx].posX, map->nodeList[idx].posY);
+            //printf("Node[%u]: (%u, %u) C\n", idx, map->nodeList[idx].posX, map->nodeList[idx].posY);
         }
         else {
-            printf("Node[%u]: (%u, %u) N\n", idx, map->nodeList[idx].posX, map->nodeList[idx].posY);
+            //printf("Node[%u]: (%u, %u) N\n", idx, map->nodeList[idx].posX, map->nodeList[idx].posY);
         }
 	}
 
@@ -208,7 +208,7 @@
         }
     }
     
-    printf("\nEdge List:\n");
+    //printf("\nEdge List:\n");
 
 	/* Read edges from the map and calculate their weights using co-ordinates */
     fscanf(fp, "%d %d", &nodeA, &nodeB);
@@ -229,7 +229,7 @@
         /* Read next edge */
         fscanf(fp, "%d %d", &nodeA, &nodeB);
 
-        printf("%d <---> %d\n", nodeA, nodeB);
+        //printf("%d <---> %d\n", nodeA, nodeB);
 	}
 
     for(idx = 0; idx < map->nodeCount; idx ++) {
@@ -238,11 +238,11 @@
         }
     }
     
-    printf("Map loaded successfully!\n");
+    //printf("Map loaded successfully!\n");
 
-    printf("Computing all shortest paths over the map...\n");
+    //printf("Computing all shortest paths over the map...\n");
     floydWarshall(map);
-    printf("Finished computing all shortest paths.\n");
+    //printf("Finished computing all shortest paths.\n");
     
 	return STATUS_OK;
  }
@@ -296,13 +296,13 @@ static UINT getNearestNode(Map *pMap, UINT x, UINT y){
  void printPath(Path *p) {
     UINT i;
     
-    printf("Path: ");
+    //printf("Path: ");
     for(i = 0; i < p->length; i++){
-        printf("%d, ", p->nodes[i]);
+        //printf("%d, ", p->nodes[i]);
     }
-    printf("%d\n", p->nodes[i]);
-    printf("Length: %u\n", p->length);
-    printf("Distance: %u\n", p->distance);
+    //printf("%d\n", p->nodes[i]);
+    //printf("Length: %u\n", p->length);
+    //printf("Distance: %u\n", p->distance);
 }
 
  void printMap(Map *pMap) {
@@ -310,60 +310,60 @@ static UINT getNearestNode(Map *pMap, UINT x, UINT y){
     
     ASSERT(pMap != NULL);
     
-    printf("nodeCount: %u\n", pMap->nodeCount);
+    //printf("nodeCount: %u\n", pMap->nodeCount);
 	
     for(idx = 0; idx < pMap->nodeCount; idx ++) {
-        printf("node #%02u: %4u %4u ", idx, pMap->nodeList[idx].posX,
-            pMap->nodeList[idx].posY);		
+        //printf("node #%02u: %4u %4u ", idx, pMap->nodeList[idx].posX,
+            //pMap->nodeList[idx].posY);		
         if(pMap->nodeList[idx].isCheckpoint == TRUE) {
-            printf("C\n");			
+            //printf("C\n");			
         }
         else {
-            printf("N\n");			
+            //printf("N\n");			
         }
     }
     
     /* Print weight matrix */
-    printf("\nWeight matrix:\n");
+    //printf("\nWeight matrix:\n");
 	
     for(idx = 0; idx < pMap->nodeCount; idx ++) {
         for(idx2 = 0; idx2 < pMap->nodeCount; idx2 ++) {
             if(pMap->weightMatrix[idx][idx2] >= INFINITY) {
-                printf("INF ");				
+                //printf("INF ");				
             }
             else{
-                printf("%3u ", pMap->weightMatrix[idx][idx2]);				
+                //printf("%3u ", pMap->weightMatrix[idx][idx2]);				
             }
         }
-        printf("\n");		
+        //printf("\n");		
     }
 
     /* Print distance matrix */
-    printf("\nDistance matrix:\n");	
+    //printf("\nDistance matrix:\n");	
     for(idx = 0; idx < pMap->nodeCount; idx ++) {
         for(idx2 = 0; idx2 < pMap->nodeCount; idx2 ++) {
             if(pMap->distanceMatrix[idx][idx2] >= INFINITY) {
-                printf("INF ");				
+                //printf("INF ");				
             }
             else{
-                printf("%3u ", pMap->distanceMatrix[idx][idx2]);				
+                //printf("%3u ", pMap->distanceMatrix[idx][idx2]);				
             }
         }
-        printf("\n");		
+        //printf("\n");		
     }
 
     /* Print path matrix */
-    printf("\nPath matrix:\n");
+    //printf("\nPath matrix:\n");
 	for(idx = 0; idx < pMap->nodeCount; idx ++) {
         for(idx2 = 0; idx2 < pMap->nodeCount; idx2 ++) {
             if(pMap->pathMatrix[idx][idx2] >= INFINITY) {
-                printf("INF ");
+                //printf("INF ");
 		    }
             else{
-                printf("%3u ", pMap->pathMatrix[idx][idx2]);				
+                //printf("%3u ", pMap->pathMatrix[idx][idx2]);				
             }
         }
-        printf("\n");
+        //printf("\n");
     }
 }
 
@@ -618,11 +618,11 @@ STATUS setBotOrientation(BotOrientation nextOrientation) {
         else if(rotation < -180) { rotation = rotation + 360;}
 
         if(rotation > 0) {
-            printf("rotateBot(LEFT, %d);\n", rotation);
+            //printf("rotateBot(LEFT, %d);\n", rotation);
 			rotateBot(LEFT, rotation);
         }
         else {
-            printf("rotateBot(RIGHT, %d);\n", -rotation);
+            //printf("rotateBot(RIGHT, %d);\n", -rotation);
 			rotateBot(RIGHT, -rotation);
         }
          
@@ -643,10 +643,10 @@ STATUS gotoPosition(Map *pMap, UINT posX, UINT posY) {
     ASSERT(pMap != NULL);
 
 	// debug start
-	printf("===============================\n");
-	printf("Current location: (%d, %d)\n", thisBotLocation.posX, thisBotLocation.posY);	
-	printf("Goto location: (%d, %d)\n", posX, posY);
-	printf("===============================\n");	
+	//printf("===============================\n");
+	//printf("Current location: (%d, %d)\n", thisBotLocation.posX, thisBotLocation.posY);	
+	//printf("Goto location: (%d, %d)\n", posX, posY);
+	//printf("===============================\n");	
     // debug end
  
    /* Step #1: Are you already at destination ? */
@@ -668,9 +668,9 @@ STATUS gotoPosition(Map *pMap, UINT posX, UINT posY) {
     ASSERT(ret == STATUS_OK);
     
 	// debug start
-    printf("------ Analyzed Path -------\n");
+    //printf("------ Analyzed Path -------\n");
 	printPath(&shortestPath);
-    printf("----------------------------\n");	
+    //printf("----------------------------\n");	
 	//debug end
 	
 	/* Step #3: Is your destination on the same edge? */
@@ -710,7 +710,7 @@ STATUS gotoPosition(Map *pMap, UINT posX, UINT posY) {
         /* Move Bot */
         ret = moveForwardFollwingLineByDistance(dist, TRUE);
         ASSERT(ret == STATUS_OK);
-        printf("moveForwardFollwingLineByDistance(%u);\n", dist);
+        //printf("moveForwardFollwingLineByDistance(%u);\n", dist);
         
         /* Update location */
         switch(nextOrientation) {
@@ -750,11 +750,11 @@ STATUS gotoPosition(Map *pMap, UINT posX, UINT posY) {
         }
         
         if(lookAheadOrientation != nextOrientation) {
-            printf("moveForwardFollwingLineByCheckpoint(1, STOP);\n");
+            //printf("moveForwardFollwingLineByCheckpoint(1, STOP);\n");
             moveForwardFollwingLineByCheckpoint(1, TRUE);
         }
         else {
-            printf("moveForwardFollwingLineByCheckpoint(1, NO_STOP);\n");
+            //printf("moveForwardFollwingLineByCheckpoint(1, NO_STOP);\n");
             moveForwardFollwingLineByCheckpoint(1, FALSE);
         }
         
@@ -791,9 +791,9 @@ STATUS gotoPosition(Map *pMap, UINT posX, UINT posY) {
         }
         
 		// debug start
-        printf("----------------------------\n");
-		printf("Current location: (%d, %d)\n", thisBotLocation.posX, thisBotLocation.posY);
-		printf("Next location: (%d, %d)\n", nextLocation.posX, nextLocation.posY);        
+        //printf("----------------------------\n");
+		//printf("Current location: (%d, %d)\n", thisBotLocation.posX, thisBotLocation.posY);
+		//printf("Next location: (%d, %d)\n", nextLocation.posX, nextLocation.posY);        
 		// debug end
 
         /* Step #5.b: Set Bot orientation */
@@ -807,9 +807,9 @@ STATUS gotoPosition(Map *pMap, UINT posX, UINT posY) {
 
 
 		// debug start
-		printf("thisBotOrientation: %d\n", thisBotOrientation);		
-		printf("nextOrientation: %d\n", nextOrientation);
-        printf("----------------------------\n");
+		//printf("thisBotOrientation: %d\n", thisBotOrientation);		
+		//printf("nextOrientation: %d\n", nextOrientation);
+        //printf("----------------------------\n");
 		// debug end
 
         /* Step #5.c: Compute look ahead orientation */        
@@ -826,11 +826,11 @@ STATUS gotoPosition(Map *pMap, UINT posX, UINT posY) {
        
         /* Step #5.d: Follow the white line till next node */
         if(lookAheadOrientation != nextOrientation) {
-            printf("moveForwardFollwingLineByCheckpoint(1, STOP);\n");
+            //printf("moveForwardFollwingLineByCheckpoint(1, STOP);\n");
             moveForwardFollwingLineByCheckpoint(1, TRUE);
         }
         else {
-            printf("moveForwardFollwingLineByCheckpoint(1, NO_STOP);\n");
+            //printf("moveForwardFollwingLineByCheckpoint(1, NO_STOP);\n");
             moveForwardFollwingLineByCheckpoint(1, FALSE);
         }		
 
@@ -861,7 +861,7 @@ STATUS gotoPosition(Map *pMap, UINT posX, UINT posY) {
         /* Move Bot */
         ret = moveForwardFollwingLineByDistance(dist, TRUE);
         ASSERT(ret == STATUS_OK);
-        printf("moveForwardFollwingLineByDistance(%u);\n", dist);
+        //printf("moveForwardFollwingLineByDistance(%u);\n", dist);
         
         /* Update location */
         switch(nextOrientation) {
@@ -911,28 +911,28 @@ void test_getPositionMetaInfo(Map *pMap) {
     UINT x, y;
     PositionMetaInfo info;
     
-    printf("P3\n");
-    printf("3000 3000\n");
-    printf("15\n");
+    //printf("P3\n");
+    //printf("3000 3000\n");
+    //printf("15\n");
     for(y = 0; y < 3000; y ++) {
         for(x = 0; x < 3000; x ++) {
 
-            //printf("(%d, %d) => ", x, y);            
+            ////printf("(%d, %d) => ", x, y);            
             getPositionMetaInfo(pMap, x, y, &info);
                 
             switch(info.loc) {
-                case AT_NODE: printf(" 15 0 0 \n"); break;                
+                case AT_NODE: //printf(" 15 0 0 \n"); break;                
                 case ON_EDGE: 
-                    printf(" 0 0 15 \n"); 
+                    //printf(" 0 0 15 \n"); 
                     break;
-                case OUTSIDE_EDGE: printf(" 0 0 0 \n"); break;
+                case OUTSIDE_EDGE: //printf(" 0 0 0 \n"); break;
                 default: ASSERT(0);
             }
             /*            
-            printf("(%d, %d) ", pMap->nodeList[info.nodeA].posX,
+            //printf("(%d, %d) ", pMap->nodeList[info.nodeA].posX,
                     pMap->nodeList[info.nodeA].posY);
                     
-            printf("(%d, %d) \n", pMap->nodeList[info.nodeB].posX,
+            //printf("(%d, %d) \n", pMap->nodeList[info.nodeB].posX,
                     pMap->nodeList[info.nodeB].posY);
                     */
         }
@@ -947,13 +947,13 @@ void test_getShortestPath(Map *pMap) {
     dest = 4;    
     getShortestPath(pMap, src, dest, &p);
     
-    printf("Path: ");
+    //printf("Path: ");
     for(i = 0; p.nodes[i] != dest; i++){
-        printf("%d, ", p.nodes[i]);
+        //printf("%d, ", p.nodes[i]);
     }
-    printf("%d\n", p.nodes[i]);
-    printf("Length: %u\n", p.length);
-    printf("Distance: %u\n", p.distance);
+    //printf("%d\n", p.nodes[i]);
+    //printf("Length: %u\n", p.length);
+    //printf("Distance: %u\n", p.distance);
 }
 
 
@@ -965,13 +965,13 @@ void test_analyzeShortestRoute(Map *pMap) {
     ret = analyzeShortestRoute(pMap, 0, 405, 609, 1, &p);
     ASSERT(ret == STATUS_OK);
     
-    printf("Path: ");
+    //printf("Path: ");
     for(i = 0; i < p.length; i++){
-        printf("%d, ", p.nodes[i]);
+        //printf("%d, ", p.nodes[i]);
     }
-    printf("%d\n", p.nodes[i]);
-    printf("Length: %u\n", p.length);
-    printf("Distance: %u\n", p.distance);
+    //printf("%d\n", p.nodes[i]);
+    //printf("Length: %u\n", p.length);
+    //printf("Distance: %u\n", p.distance);
 
 }
 
