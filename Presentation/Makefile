@@ -1,5 +1,5 @@
 # set latexfile to the name of the main file without the .tex
-latexfile = pres
+latexfile = pres_final
 
 # put the names of figure files here.  include the .eps
 figures = 
