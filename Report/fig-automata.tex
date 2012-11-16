@@ -1,0 +1,56 @@
+% Generated with LaTeXDraw 2.0.8
+% Fri Nov 16 16:31:00 IST 2012
+% \usepackage[usenames,dvipsnames]{pstricks}
+% \usepackage{epsfig}
+% \usepackage{pst-grad} % For gradients
+% \usepackage{pst-plot} % For axes
+\scalebox{1} % Change this value to rescale the drawing.
+{
+\begin{pspicture}(0,-4.414219)(15.545313,4.414219)
+\usefont{T1}{ptm}{m}{n}
+\rput(2.8828125,1.4107813){\psframebox[linewidth=0.04]{Outside Checkpoint Range}}
+\usefont{T1}{ptm}{m}{n}
+\rput(10.997031,2.6107812){Within Checkpoint Range}
+\usefont{T1}{ptm}{m}{n}
+\rput(12.579687,-1.3892188){Checkpoint Missed}
+\usefont{T1}{ptm}{m}{n}
+\rput(3.1803124,-1.3892188){Unexpected Checkpoint Error}
+\usefont{T1}{ptm}{m}{n}
+\rput(7.996719,-1.3892188){At Checkpoint}
+\psarc[linewidth=0.04,arrowsize=0.05291667cm 2.0,arrowlength=1.4,arrowinset=0.4]{->}(3.061875,1.6007812){0.7}{0.0}{180.0}
+\psframe[linewidth=0.04,dimen=outer](13.361875,3.1007812)(8.561875,2.3007812)
+\rput{-45.0}(0.6594968,8.393728){\psarc[linewidth=0.04,arrowsize=0.05291667cm 2.0,arrowlength=1.4,arrowinset=0.4]{->}(10.461875,3.4007812){0.5}{0.0}{270.0}}
+\psframe[linewidth=0.04,dimen=outer](14.361875,-0.89921874)(10.761875,-1.6992188)
+\psframe[linewidth=0.04,dimen=outer](9.361875,-0.89921874)(6.561875,-1.6992188)
+\psframe[linewidth=0.04,dimen=outer](5.961875,-0.89921874)(0.361875,-1.6992188)
+\psline[linewidth=0.04cm,arrowsize=0.05291667cm 2.0,arrowlength=1.4,arrowinset=0.4]{->}(4.761875,1.7007812)(8.561875,2.7007813)
+\psline[linewidth=0.04cm,arrowsize=0.05291667cm 2.0,arrowlength=1.4,arrowinset=0.4]{->}(10.961875,2.3007812)(13.561875,-0.89921874)
+\psline[linewidth=0.04cm,arrowsize=0.05291667cm 2.0,arrowlength=1.4,arrowinset=0.4]{->}(10.961875,2.3007812)(7.961875,-0.89921874)
+\psline[linewidth=0.04cm,arrowsize=0.05291667cm 2.0,arrowlength=1.4,arrowinset=0.4]{->}(2.361875,1.1007812)(1.561875,-0.89921874)
+\usefont{T1}{ptm}{m}{n}
+\rput(1.0407813,-2.5892189){Legend:}
+\usefont{T1}{ptm}{m}{n}
+\rput(2.4882812,-2.9892187){D: Distance covered yet}
+\usefont{T1}{ptm}{m}{n}
+\rput(3.5298438,-3.3892188){$R_L$: Checkpoint range lower bound}
+\usefont{T1}{ptm}{m}{n}
+\rput(3.5798438,-3.7892187){$R_H$: Checkpoint range upper bound}
+\usefont{T1}{ptm}{m}{n}
+\rput(5.697344,-4.1892185){C: Checkpoint sensing (1 means checkpoint hit, 0 otherwise)}
+\usefont{T1}{ptm}{m}{n}
+\rput(2.0545313,2.6107812){<$D < R_L$, $C==0$>}
+\usefont{T1}{ptm}{m}{n}
+\rput(6.204531,2.2107813){\psframebox*[framesep=0, boxsep=false,fillcolor=white] {<$D == R_L$, $C==0$>}}
+\usefont{T1}{ptm}{m}{n}
+\rput(11.244532,4.210781){<$D <= R_H$, $C==0$>}
+\usefont{T1}{ptm}{m}{n}
+\rput(13.314531,-0.18921874){\psframebox*[framesep=0, boxsep=false,fillcolor=white] {<$D > R_H$, $C==X$>}}
+\usefont{T1}{ptm}{m}{n}
+\rput(2.0545313,0.21078125){\psframebox*[framesep=0, boxsep=false,fillcolor=white] {<$D < R_L$, $C==1$>}}
+\usefont{T1}{ptm}{m}{n}
+\rput(9.444531,1.0107813){\psframebox*[framesep=0, boxsep=false,fillcolor=white] {<$D <= R_H$, $C==1$>}}
+\psline[linewidth=0.04cm,arrowsize=0.05291667cm 2.0,arrowlength=1.4,arrowinset=0.4]{->}(3.561875,1.1007812)(6.961875,-0.89921874)
+\usefont{T1}{ptm}{m}{n}
+\rput(5.804531,-0.38921875){\psframebox*[framesep=0, boxsep=false,fillcolor=white] {<$D == R_L$, $C==1$>}}
+\end{pspicture} 
+}

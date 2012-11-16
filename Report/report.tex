@@ -1,0 +1,464 @@
+\documentclass[a4paper, 12pt]{article}
+\usepackage{a4wide}
+\usepackage{flexiprogram}
+\usepackage{wrapfig}
+\usepackage[usenames,dvipsnames]{pstricks}
+\usepackage{epsfig}
+\usepackage{pst-grad} % For gradients
+\usepackage{pst-plot} % For axes
+\usepackage{pst-node}
+\usepackage{url}
+% \usepackage[labelfont={bf}]{caption}
+
+\bibliographystyle{plain}
+
+% \title{Android Based Greenhouse Monitoring And Harvesting Using Accurate And Automated Bot Guidance System}
+% \author{Devendra Bhave\\(114050004) \and Wasim\\(114050007) \and Meenakshi Verma
+% \\(123050014) \and Mukund Lahoti\\(123050018)}
+% \date{\today}
+
+\renewcommand{\baselinestretch}{1.3}
+\setlength{\parindent}{0in}
+
+\begin{document}
+\begin{titlepage}
+ \centering
+ \includegraphics[width=0.15\textwidth]{./iitblogo}\\[1.5cm]
+ \textsc{\LARGE Software Requirements Specification}\\[1.5cm]
+ \textsc{\Large CS684 Projects} \\ [1.5cm]
+ \rule{\linewidth}{0.5mm} \\ [0.5cm]
+ {\LARGE \textbf{Greenhouse Monitoring And Harvesting Using Accurate And Automated Bot Guidance System}}
+ \rule{\linewidth}{0.5mm}
+ \\ [1.5cm]
+
+ \large
+ \begin{tabular}{cc}
+  Devendra Bhave & Mohd Vasimuddin\\
+  (114050004) & (114050007)\\
+  \\
+  Meenakshi Verma & Mukund Lahoti\\
+  (123050014) & (123050018)
+ \end{tabular}
+
+ \vspace{2cm}
+ \today
+\end{titlepage}
+
+\tableofcontents
+
+\newpage
+
+\section{Introduction}
+Greenhouse is the building in which plants are grown. Building is covered with various covering materials like
+plastic sheets or glass. This allows solar or artificial light to enter the building, but traps the heat inside
+the building. This permits us to control weather conditions inside a greenhouse. Our project aims to
+harvest crops in such greenhouses completely autonomously. This report discusses design and implemetation aspects of
+the project. It talks about design principles applied, engineering choices made and risks mitigated. It also 
+enumerates difficulties faced and further possible enhancements.
+
+\subsection{Definitions, Acronyms and Abbreviations}
+\begin{itemize}
+ \item FireBird: A robot indigenously designed at ERTS laboratory, IIT Bombay. \cite{fbhwmanual, fbswmanual, eyantra}
+ \item ATmega2560: The microcontroller used by FireBird V robot
+ \item AVR GCC: The platform-specific compiler which compiles C code to run on various AVR microcontrollers developed by Atmel
+ \item WinAVR: Open-source software which uses AVR GCC compiler
+ \item AVR Studio: Open-source software which uses AVR GCC compiler
+\end{itemize}
+
+\section{Problem Statement}
+Project consists of two key entities -- greenhouse and user. A single greenhouse consists of greenhouse building with
+plants arranged in aisles and troughs formation, greenhouse controller and the Bot. There could be multiple such 
+greenhouses each one equipped with its own greenhouse controller and the Bot. The entity \emph{user} refers to human farmer.
+Greenhouse controller autonomously manages greenhouse functions like sunlight control using sun shades, humidity control using
+blowers, etc. It has its own set of sensors, actuators and control logic. User merely specifies its parameters 
+like amount of sunlight needed for plants, permissible humidity range, etc. Operation of such greenhouse 
+controller is out of scope for this project.
+
+Each greenhouse has one Bot to carry out certain farming tasks. Bot consists of FireBird robot with mounted 
+wireless network camera and robotic arm. Figure \ref{fig-bot} shows design of the Bot.
+User communicates with Bot via suitable technology. Such communication method is assumed to be 
+present. We have used ZigBee point-to-point link for communication between Linux machine and FireBird bot.
+User assigns work to the Bot. Bot has capability to move anywhere inside the greenhouse, to take photos and 
+videos of plants. It may communicate with greenhouse controller, monitor plant growth, harvest crops and 
+alert user when necessary.
+
+\begin{figure}
+\input{fig-bot.tex}
+\caption{Design of FireBird Bot}
+\label{fig-bot}
+\end{figure}
+
+\section{Requirements}
+\subsection{Hardware Requirements}
+\begin{itemize}
+ \item FireBird V robot
+ \item Linux machine
+ \item Mounted wireless network camera with WiFi
+ \item WiFi access point with Internet connectivity
+ \item Robotic arm with cutter
+ \item Two ZigBee cards
+\end{itemize}
+
+\subsection{Functional Requirements}
+\begin{enumerate}
+ \item User remotely connects to desired greenhouse.
+ \item User specifies trough number and automatic Bot guidance system maneuvers the Bot to reach given trough.
+ \item User receives live streaming video from the Bot.
+ \item Bot uses cutter to cut fruits and vegetables from branches which drop into collector below.
+ \item User gets battery level and energy estimates for each of the above task.
+\end{enumerate}
+
+\subsection{Non Functional Requirements}
+\begin{enumerate}
+ \item Intuitive GUI design
+ \item Good quality video streaming
+ \item High speed Internet connection
+\end{enumerate}
+
+\subsection{Design Constraints}
+User cannot control more than one Bot at a time. There is no support for command broadcasting to multiple Bots.
+Area of greenhouse is determined by ZigBee range.
+
+\section{Implementation}
+Given the degree of complexity involved, we have divided problem statement into three subtasks:
+\begin{enumerate}
+ \item[Task \#1]: Move the Bot to desired trough with certain degree of accuracy using automatic bot guidance system 
+ \item[Task \#2]: Fetch images from network camera and process it to detect fruits and cutter.
+ \item[Task \#3]: Control cutter and robotic arm to precisely cut fruits.
+\end{enumerate}
+
+\subsection{FireBird Bot System Architecture}
+Figure \ref{fig-arch} shows architecture of system running on the Bot. We have followed modular design methodology.
+\begin{figure}
+ \input{fig-arch.tex}
+ \caption{System Architecture of FireBird Bot}
+ \label{fig-arch}
+\end{figure}
+
+There are multiple layers of modules, each supporting well defined primitives. Role of each module is 
+summarized below:
+\begin{itemize}
+ \item \textbf{Firebird:} This refers to hardware layer of FireBird Bot. Hardware is controlled by changing
+  values in command and status registers. Refer to hardware \cite{fbhwmanual} and software \cite{fbswmanual} 
+  manuals of FireBird V for further details.
+  
+  \item \textbf{HAL Layer:} Hardware abstraction layer (HAL) module hides hardware registers. It offers
+  typical driver like primitives. \texttt{init<Device>()} API initializes the hardware of that device and 
+  returns current status. Table \ref{table-hal-primitives} lists all HAL primitives and their use.
+  
+  \item \textbf{Assertions:} Assertion module mimics C assertions. It supports macro 
+  \texttt{ASSERT(condition)}. If assertion fails (\emph{i.e.} condition is false), it halts the Bot, shows
+  line number, source file name and failed condition on LCD screen and starts beeping until reset. Assertion
+  is quite useful for debugging. Define macro \texttt{NDEBUG} to turn assertions off. This replaces \texttt{ASSERT()}
+  statements by empty statements.
+  
+  \item \textbf{ROM Filesystem:} This module mimics ROM based file system in limited manner. It redirects standard
+  C file streams \texttt{stdin} and \texttt{stdout} to ZigBee. Standard I/O functions  like \texttt{printf()}, \texttt{putchar()}, etc.
+  send data over ZigBee to remote console. This simplifies data transmission over ZigBee
+  as well as helps in debugging Bot code.  
+  \texttt{scanf()} and \texttt{getchar()} functions read from ZigBee. This allows to accept arbitrary data from
+  remote machine. Bot can accept arena map files at runtime.
+  AVR C library does not support files directly. We have provided support for compiled-in files using predefined
+  file handles. File handle named \texttt{MAP\_FILE} can be used to read from compiled-in read-only map file using
+  standard buffered I/O functions like \texttt{fscanf(MAP\_FILE, ...)}.
+  
+  \item \textbf{White Line Follower:} This module supports white line related operations. It recognizes 
+  \emph{checkpoints} (Explained in section \ref{section-bgs}). Table \ref{table-wlf-primitives} explains 
+  supported operations. Bot supports only four possible orientations:
+  \begin{itemize}
+   \item \texttt{EASTWARD}: Along positive X-axis
+   \item \texttt{NORTHWARD}: Along positive Y-axis
+   \item \texttt{WESTWARD}: Along negative X-axis
+   \item \texttt{SOUTHWARD}: Along negative Y-axis
+  \end{itemize}
+
+\end{itemize}
+
+
+\begin{table}
+ \centering
+ \begin{tabular}{|l|l|}
+ \hline
+ \multicolumn{1}{|c|}{\textbf{Primitive}} & \multicolumn{1}{|c|}{\textbf{Use}}\\
+ \hline \hline
+ \texttt{initAdc()} & Initialize ADC hardware\\
+ \texttt{getAdcValue(adc\_channel)} & Read ADC value for specified channel\\
+ \hline
+ \texttt{initBuzzer()} & Initialize ADC hardware\\
+ \texttt{buzzerOn()} & Turn on buzzer\\
+ \texttt{buzzerOff()} & Turn off buzzer\\
+ \hline
+ \texttt{initLcd()} & Initialize LCD hardware\\
+ \texttt{lcdHome()} & Place cursor at first column on LCD display\\
+ \texttt{lcdClear()} & Clear LCD screen\\
+ \texttt{lcdCursor(row, column)} & Place cursor at given row and column on LCD display\\
+ \texttt{lcdString(data)} & Write null terminated data on LCD display\\
+ \hline
+ \texttt{initMotor()} & Initialize DC motor hardware\\
+ \texttt{motorDirectionSet(direction)} & Controls DC motors for direction\\
+ \texttt{motorVelocitySet(lvel, rvel)} & Set motor velocity using pulse width modulation\\
+ \texttt{motorVelocityGet()} & Read motor velocity settings\\
+ \texttt{motorLeftPositionEncoder} & Register left positional encoder callback\\
+ \multicolumn{1}{|r|}{\texttt{Init(lCallback)}} & \\
+ \texttt{motorRightPositionEncoder} & Register right positional encoder callback\\
+ \multicolumn{1}{|r|}{\texttt{Init(rCallback)}} & \\
+ \texttt{motorLeftPositionEncoder} & Enable/disable left positional encoder interrupt\\
+ \multicolumn{1}{|r|}{\texttt{InterruptConfig(state)}} &  \\
+ \texttt{motorRightPositionEncoder} & Enable/disable right positional encoder interrupt\\
+ \multicolumn{1}{|r|}{\texttt{InterruptConfig(state)}} & \\
+ \hline
+ \texttt{initPower()} & Initialize power management hardware\\
+ \texttt{powerOn(sensor\_group)} & Turns power on for given group of sensors\\
+ \texttt{powerOff(sensor\_group)} & Turns power off for given group of sensors\\
+ \hline
+ \texttt{initServo()} & Initialize servo motor hardware\\
+ \texttt{servoSet(motor, angle)} & Sets given angle for servo motor\\
+ \texttt{servoFree(motor)} &  Unlocks servo motors\\
+ \hline
+ \texttt{initZigbee()} & Initialize ZigBee hardware\\
+ \texttt{zigbeeSendByte(u8Data, stream)} & Send one byte data over ZigBee\\
+ \texttt{zigbeeReceiveByte(stream)} &  Receive one byte data over ZigBee\\
+ \hline
+ \end{tabular}
+ \caption{FireBird HAL Primitives}
+ \label{table-hal-primitives}
+\end{table}
+
+\begin{table}
+ \centering
+ \begin{tabular}{|l|l|}
+ \hline
+ \multicolumn{1}{|c|}{\textbf{Primitive}} & \multicolumn{1}{|c|}{\textbf{Use}}\\
+ \hline \hline
+ \texttt{initWhiteLineFollower()} & Initialize white line follower module\\
+ \texttt{moveForwardFollwingLine} & Moves along whiteline till specified distance\\
+ \multicolumn{1}{|r|}{\texttt{ByDistance(distance)}}& (in millimeter) is covered\\
+ \texttt{moveForwardFollwingLine} & Moves along whiteline until checkpoint is hit\\
+ \multicolumn{1}{|r|}{\texttt{ByCheckpoint()}} & \\
+ \texttt{rotateBot(direction, angle)} & Rotates bot in specified direction by given degrees\\ 
+ \hline
+ \end{tabular}
+ \caption{White Line Follower Primitives}
+ \label{table-wlf-primitives}
+\end{table}
+
+\subsection{Automatic Bot Guidance System} \label{section-bgs}
+Problem of maneuvering the Bot to desired location in the Greenhouse is of fundametal in nature. Every
+greenhouse related project needs to solve it. We designed checkpoint based completely automatic bot guidance
+system (ABGS) which moves the Bot to desired location in the greenhouse accurately. Maximum error in moving the Bot is
+bounded by fixed constant and is independent of the time and distance covered.
+
+ABGS is initialized with the map of the greenhouse. ABGS tracks the Bot using its Cartesian co-ordinates in millimeters.
+ABGS moves the Bot along white lines. It uses position encoder to estimate current Bot location. Use of position
+encoders introduces error in tracking current bot location due to hardware imprecision. Such error in known as 
+\emph{location error}. Location error is bounded by using checkpoints. \emph{Checkpoint} is a co-ordinate on 
+the map whose location is \emph{accurately} known. Whenever Bot moves over checkpoint it re-synchronizes its
+estimate of current location. Figure \ref{fig-automata} shows automaton used for checkpoint synchronization.
+\begin{figure}
+ \input{fig-automata.tex}
+ \caption{Automaton for Checkpoint Synchronization}
+ \label{fig-automata}
+\end{figure}
+
+
+ABGS uses Floyd-Warshall all source shortest path algorithm over the greenhouse map. It supports 
+\texttt{gotoPosition(x, y)} primitive which moves the Bot from current location to \texttt{(x, y)}. Table 
+\ref{table-abgs-primitives} lists primitives supported by ABGS.
+
+Features of ABGS:
+\begin{itemize}
+ \item Gives guarantee that \emph{location error shall never exceed known constant bound}
+ \item Precomputes all node shortest paths using Floyd-Warshall algorithm
+ \item Uses integer only computations for speed
+ \item Uses fast integer square roots
+ \item Validated using assertions for manually specified loop invariants
+\end{itemize}
+
+\begin{table}
+ \centering
+ \begin{tabular}{|l|l|}
+ \hline
+ \multicolumn{1}{|c|}{\textbf{Primitive}} & \multicolumn{1}{|c|}{\textbf{Use}}\\
+ \hline \hline
+ \texttt{initBotGuidanceSystem(fp, map)} & Initialize ABGS with from file handle \texttt{fp}\\
+ \texttt{gotoPosition(x, y)} & \texttt{x} and \texttt{y} are destination co-ordinates in millimeters\\
+ \texttt{setBotOrientation(orientation)} & Changes bot orientation\\
+ \hline
+ \end{tabular}
+ \caption{Automatic Bot Guidance System Primitives}
+ \label{table-abgs-primitives}
+\end{table}
+
+\subsection{Object Detection Using Computer Vision}
+We have used C-URL library to fetch images from wireless network camera on linux machine. For image
+processing and object detection, we used OpenCV 2.4. Our primary interest lies in detecting cutter and multiple 
+rippened fruits. We pasted blue sticker on cutter and fruits are assumed to have reddish hue. Fruits should
+have certain minimum size. Such requirement serves two purposes. Firstly fruits that are ready for harvesting
+will be large enough. Secondly, it filters out spuriously detected objects making detection robust.
+
+\subsection{Fruit Cutting}
+Cutter fitted on robotic arm can move along both vertical and horizaontal planes. Figure \ref{fig-traj} shows
+cutting trajectories followed by robotic arm. Bot starts cutting from one edge and moves forward sweeping
+each trajectory. Center of fruit and cutter are aligned by moving robotic arm. When alignment matches,
+cutter jaws are closed to cut fruit. Fruit drops in collector bin attached to the Bot. 
+
+\begin{figure}
+ \input{fig-traj.tex}
+ \caption{Cutting Trajectories for Single Trough}
+ \label{fig-traj}
+\end{figure}
+
+
+\section{Testing Strategy and Data}
+ We have developed testsuits for each of the modules Directory \texttt{FireBird/testsuit} contains all test code.
+ \subsection{Testing Automatic Bot Guidance System}
+ We have followed method of \emph{assertion based validation}. We have used assertions for sanity checks on all
+ parameters and for enforcing loop invariant checks. Any logical error in the module results in failed assertion. 
+ Then, we created test map of size 3000 mm X 3000 mm. We simulated \texttt{gotoPosition()} for all possible pairs
+ of co-ordinates. Test procedures \texttt{test\_gotoPosition()} and \texttt{test\_gotoPosition2()} exhaustively 
+ test all possible combinations.
+ 
+ \subsection{Testing Fruit Cutting}
+ Size of fruit cannot exceed size of cutter jaw. We tested fruit sizes ranging from small beads to table tennis ball.
+ We fined tuned colour parameters for small sized objects as small objects are difficult to detect.
+ 
+ \subsection{Energy Consumption Statistics}
+ We divided operational battery voltage range into three regions. Table \ref{table-battery} shows all significant
+ levels and their associated semantics. Voltage values have been determined by repeated experimentation.
+ \begin{table}
+  \centering
+  \begin{tabular}{|c|c|l|}
+  \hline 
+  \multicolumn{1}{|c|}{\textbf{Battery Voltage}} & \multicolumn{1}{|c|}{\textbf{Battery API value}} & 
+  \multicolumn{1}{|c|}{\textbf{Meaning}}\\
+  \hline
+  \hline
+  9.0 V & $> 900$ & Battery is sufficiently charged.\\
+  \hline
+  8.0 V & $< 800$ & Battery is low\\
+  & & Do not start new task.\\
+  & & Finish current task.\\
+  \hline
+  7.5 V & $< 750$ &  Battery is critically low.\\
+  & & Abandon current task.\\
+  & & Turn off all servo motors\\
+  & & Run towards recharge station.\\
+  \hline
+  \end{tabular}
+  \caption{Battery Voltage Levels}
+  \label{table-battery}
+ \end{table}
+ 
+ Energy consumption by harvesting task is shown in Table \ref{table-energy}.
+ \begin{table}
+  \centering
+  \begin{tabular}{|l|l|l|}
+ \hline
+ \multicolumn{1}{|c|}{\textbf{Action}} & \multicolumn{1}{|c|}{\textbf{Energy (Watt-Sec)}} & 
+ \multicolumn{1}{|c|}{\textbf{Energy (Watt-Hr)}}\\
+ \hline
+ \hline
+ Move Bot along whiteline & 358 per meter & 0.099 per meter\\
+ \hline
+ Cutter and arm movement & &\\
+ + move forward by 10cm & 340 & 0.094\\
+ \hline
+ Scan sideways for fruits & 1326 & 0.368\\
+ \hline
+ Cutting fruit & 1029 per fruit & 0.286 per fruit\\
+ \hline
+ One trajectory & 2875 & 0.799\\
+ \hline
+ One trough & &  \\
+ (= 5 trajectories)& 14375 & 3.993\\
+ \hline
+ \end{tabular}
+ \caption{Energy Consumption for Harvesting Task}
+ \label{table-energy}
+ \end{table}
+ 
+%------------------
+\section{Interfaces}
+\subsection{User Interfaces}
+User App offers graphical interface to the user on the phone. User App must be downloaded and installed.
+User App initially shows list of greenhouses to connect to. On successful connection, user gets screens showing
+the greenhouse map, video stream, list of tasks that Bot can perform, Bot control interface and Bot battery level
+indicator.
+
+\subsection{Hardware Interfaces}
+\begin{enumerate}
+ \item ATmega2560: Master Microcontroller in FireBird V
+ \item ATmega8: Slave Microcontroller in FireBird V
+ \item Power Supply: External 7.4V, 1800mAh Lithium Polymer Battery
+ \item FireBird and Android interface
+ \item Camera and Android interface
+\end{enumerate}
+
+\subsection{Software Interfaces}
+\begin{enumerate}
+ \item Compiler: AVR GCC (Specific to Atmel AVR processors)
+ \item Development Tools and IDEs: WinAVR, AVR Studio 4.0.,Eclipse IDE with ADT Plugin
+ (http://www.eclipse.org/downloads/), Android 2.3.3 SDK (API 10) \cite{adr}
+ \item Programming Languages: C, Java.
+\end{enumerate}
+
+\subsection{Communications Interfaces}
+\begin{enumerate}
+ \item WiFi: Connects WiFi camera with user's Android phone
+ \item ZigBee: Connects FireBird and Spark V
+ \end{enumerate}
+
+\section{Quality Control}
+Quality of the project is judged with test cases specified below:
+\begin{enumerate}
+ \item[Test \#1]: Automatic bot guidance system correctly moves the Bot to desired location.
+ \item[Test \#2]: User App correctly shows video from the Bot.
+ \item[Test \#3]: Greenhouse monitor task autonomously sends photos/videos to the user while scouting greenhouse.
+ \item[Test \#4]: User can remotely control Bot using the phone.
+ \item[Test \#5]: User can cut fruits/vegetables using robotic arm with circular saw.
+ \item[Test \#6]: Energy consumption estimates for fully automatic tasks are \emph{fairly} correct.
+ \item[Test \#7]: Energy consumption estimates for partially automatic tasks are notified to user before task begins.
+ \item[Test \#8]: Build battery recharge station, if time permits for bonus credit.
+ \end{enumerate}
+
+\section{Risk Management}
+Tasks that may go wrong and workarounds are specified below.
+\begin{enumerate}
+ \item Unauthorized user controls greenhouse
+ \item[] \emph{Workaround}: Use secure network protocol and authenticate user before connection.
+ \item 2D video on phone does not give accurate depth information.
+ \item[] \emph{Workaround}: User should move robot around to get depth cues. Additionally, we can mount additional camera on
+ Bot to get side view or different camera angle. 
+ \item Internet is down.
+ \item[] \emph{Workaround}: User should go to greenhouse and use LAN to connect to Bot.
+ \item FireBird runs out of battery power.
+ \item[] \emph{Workaround}: Monitor battery level. Obtain as precise energy estimates as possible to avoid such situation.
+ Do not start the task if its estimated power requirement is more than currently available battery power.
+\end{enumerate}
+
+\section{Performance}
+\subsection{Functional}
+Functional performance of the project is based on how well it carries out given task. 
+These are four tasks on which functional performance depends:
+\begin{enumerate}
+ \item Bot guidance system is automatic $\Rightarrow$ No manual intervention needed for moving the Bot.
+ \item Bot guidance system is accurate $\Rightarrow$ Error in location does not exceed known limits.
+ \item Greenhouse monitoring is automatic $\Rightarrow$ Bot movement and photos/video capturing is automatic.
+ User still needs to detect nutrient deficiency, ailing plants, pest infestation, ripening of harvest, etc. from
+ the photos/videos presented to him/her.
+ \item Harvesting is semi-automatic $\Rightarrow$ User controls the Bot remotely for harvesting with live video on phone's screen.
+\end{enumerate}
+
+\subsection{Energy}
+Each of the tasks, that the Bot performs, needs battery power. We list energy specific perform parameters as below:
+\begin{enumerate}
+ \item Bot estimates energy required for each task with \emph{fairly good} accuracy.
+ \item Bot switches off hardware not necessary for the task and conserves battery power.
+ \item In manual mode, Bot informs user about current battery level and minimum safe battery level needed to 
+ reach to battery recharge station.
+\end{enumerate}
+
+\addcontentsline{toc}{section}{References}
+\bibliography{sample}
+\end{document}
+
