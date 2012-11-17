@@ -65,7 +65,7 @@ enumerates difficulties faced during the project development and further possibl
 
 \subsection{Definitions, Acronyms and Abbreviations}
 \begin{itemize}
- \item FireBird: A robot indigenously designed at ERTS laboratory, IIT Bombay. \cite{fbhwmanual, fbswmanual, eyantra}
+ \item FireBird: A robot indigenously designed at ERTS laboratory, IIT Bombay. \cite{eyantra}
  \item AVR-libc: Standard C library implementation by AVR Systems
  \item ABGS: Automatic Bot Guidance System
 \end{itemize}
@@ -165,7 +165,7 @@ summarized below:
   AVR C library does not support files directly. We have provided support for compiled-in files using predefined
   file handles. File handle named \texttt{MAP\_FILE} can be used to read from compiled-in read-only map file using
   standard buffered I/O functions like \texttt{fscanf(MAP\_FILE, ...)}. More detailed discussion about file system
-  and map files is included in \texttt{readme.md} file the project source code.
+  and format of map file is included in file \texttt{readme.md} in the project source code.
   
   \item \textbf{White Line Follower:} This module supports white line related operations. It recognizes 
   \emph{checkpoints} (Explained in section \ref{section-bgs}). Table \ref{table-wlf-primitives} explains 
@@ -271,6 +271,7 @@ ABGS uses Floyd-Warshall all source shortest path algorithm over the greenhouse 
 \texttt{gotoPosition(x, y)} primitive which moves the Bot from current location to location with co-ordinates
 \texttt{(x, y)}. Table \ref{table-abgs-primitives} lists primitives supported by ABGS.
 
+\vspace{\baselineskip}
 \textbf{Features of ABGS:}
 \begin{itemize}
  \item Gives guarantee that \emph{location error shall never exceed known constant bound}
@@ -289,6 +290,8 @@ ABGS uses Floyd-Warshall all source shortest path algorithm over the greenhouse 
  \texttt{initBotGuidanceSystem(fp, map)} & Initialize ABGS with from file handle \texttt{fp}\\
  \texttt{gotoPosition(x, y)} & \texttt{x} and \texttt{y} are destination co-ordinates in millimeters\\
  \texttt{setBotOrientation(orientation)} & Changes bot orientation\\
+ \texttt{gotoForward(distance)} & Moves the Bot forward by given distance in\\
+  & millimeters\\
  \hline
  \end{tabular}
  \caption{Automatic Bot Guidance System Primitives}
