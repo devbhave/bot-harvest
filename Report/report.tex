@@ -68,6 +68,7 @@ enumerates difficulties faced during the project development and further possibl
  \item FireBird: A robot indigenously designed at ERTS laboratory, IIT Bombay. \cite{eyantra}
  \item AVR-libc: Standard C library implementation by AVR Systems
  \item ABGS: Automatic Bot Guidance System
+ \item PWM: Pulse Width Modulation
 \end{itemize}
 
 \section{Problem Statement}
@@ -190,7 +191,7 @@ summarized below:
  \texttt{initAdc()} & Initialize ADC hardware\\
  \texttt{getAdcValue(adc\_channel)} & Read ADC value for specified channel\\
  \hline
- \texttt{initBuzzer()} & Initialize ADC hardware\\
+ \texttt{initBuzzer()} & Initialize buzzer hardware\\
  \texttt{buzzerOn()} & Turn on buzzer\\
  \texttt{buzzerOff()} & Turn off buzzer\\
  \hline
@@ -201,7 +202,7 @@ summarized below:
  \texttt{lcdString(data)} & Write null terminated data on LCD display\\
  \hline
  \texttt{initMotor()} & Initialize DC motor hardware\\
- \texttt{motorDirectionSet(direction)} & Controls DC motors for direction\\
+ \texttt{motorDirectionSet(direction)} & Controls direction of DC motors\\
  \texttt{motorVelocitySet(lvel, rvel)} & Set motor velocity using pulse width modulation\\
  \texttt{motorVelocityGet()} & Read motor velocity settings\\
  \texttt{motorLeftPositionEncoder} & Register left positional encoder callback\\
