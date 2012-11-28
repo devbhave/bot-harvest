@@ -1,5 +1,8 @@
-/* File: buzzer.h
- * Description: Buzzer headers
+/** @file buzzer.h
+ * Buzzer headers
+ */
+
+/*
  * Written By: Devendra Bhave (devendra@cse.iitb.ac.in)
  * Copyright (c) IIT Bombay. All Rights Reserved.
  */

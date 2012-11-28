@@ -1,5 +1,8 @@
-/* File: whiteLineFollower.h
- * Description: Headers for white line follower
+/** @file: whiteLineFollower.h
+ * Headers for white line follower
+ */
+
+/*
  * Written By: Devendra Bhave (devendra@cse.iitb.ac.in)
  * Copyright (c) IIT Bombay. All Rights Reserved.
  */
@@ -33,4 +36,3 @@
  STATUS moveForwardFollwingLineByCheckpoint(UINT chkpts, BOOL stop);
  STATUS moveForwardFollwingLineByDistance(ULINT distInMm, BOOL stop);
  
-	

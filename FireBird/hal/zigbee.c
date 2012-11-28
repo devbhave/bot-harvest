@@ -1,3 +1,11 @@
+/** @file zigbee.c
+ * Zigbee module.
+ */
+
+/*
+ * Written By: Devendra Bhave (devendra@cse.iitb.ac.in)
+ * Copyright (c) IIT Bombay. All Rights Reserved.
+ */
 
  #include <stdio.h>
  #include <prjParams.h>
@@ -6,7 +14,7 @@
  #include <assert.h>
  #include <util/setbaud.h>
 
-//Function To Initialize ZigBee
+/** Initialize ZigBee harware */
 STATUS initZigbee() {
 	INT_LOCK();	/* Lock (disable) global interrupts */
 
@@ -34,7 +42,11 @@ STATUS initZigbee() {
 	return STATUS_OK;
 }
 
-STATUS zigbeeSend(char *data, UINT size) {
+/** Send multibyte data over zigbee
+ */
+STATUS zigbeeSend(char *data,   /**< Multibyte data to be sent */
+                  UINT size     /**< Number of bytes to send */
+    ) {
 	UINT idx;
 	
 	ASSERT(data != NULL);
@@ -49,6 +61,7 @@ STATUS zigbeeSend(char *data, UINT size) {
 	return STATUS_OK;
 }
 
+/** Send one byte on zigbee */
 int zigbeeSendByte(char u8Data, FILE *stream)
 {
    if(u8Data == '\n')
@@ -62,6 +75,7 @@ int zigbeeSendByte(char u8Data, FILE *stream)
 	return 0;
 }
 
+/** Receive one byte data from zigbee in polling mode */
 int zigbeeReceiveByte(FILE *stream)
 {
 	BYTE u8Data;
@@ -76,3 +90,4 @@ int zigbeeReceiveByte(FILE *stream)
 	// Return received data
 	return u8Data;
 }
+

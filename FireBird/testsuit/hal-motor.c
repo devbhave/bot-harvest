@@ -1,5 +1,8 @@
-/* File: hal-motor.c
- * Description: Test cases for hardware abstraction layer for motor control
+/** @file hal-motor.c
+ * Test cases for hardware abstraction layer for motor control
+ */
+
+/*
  * Written By: Devendra Bhave (devendra@cse.iitb.ac.in)
  * Copyright (c) IIT Bombay. All Rights Reserved.
  */
@@ -37,7 +40,6 @@
 	initMotor();
 	initLcd();
 
-#if 0
 	/* Test #1: Check direction */
 	
 	motorVelocitySet(255, 255);
@@ -118,8 +120,6 @@
 	lPosCount = 100;
 	motorVelocitySet(255, 255);
 	motorDirectionSet(FORWARD);
-#endif
-
 	
 	/* Test #6: Check orientation */
 	motorLeftPositionEncoderInit(leftPosEncoderIsr);

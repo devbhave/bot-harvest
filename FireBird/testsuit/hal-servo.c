@@ -1,5 +1,8 @@
-/* File: hal-servo.c
- * Description: Test cases for hardware abstraction layer for servo motor control
+/** @file hal-servo.c
+ * Test cases for hardware abstraction layer for servo motor control
+ */
+
+/*
  * Written By: Devendra Bhave (devendra@cse.iitb.ac.in)
  * Copyright (c) IIT Bombay. All Rights Reserved.
  */
@@ -37,7 +40,7 @@
 		servoSet(SERVO3, 0);
 		servoSet(SERVO3, 120);
 	}
-#if 0
+#if 1
 	for(offset = 0; offset <= 180; offset += 5) {
 		servoSet(SERVO3, offset);
 		lcdCursor(1, 1);
@@ -47,7 +50,7 @@
 		_delay_ms(1000);
 	}
 #endif	
-#if 0
+#if 1
 	min = 40;
 	max = 140;
 	center = (max + min) / 2;	
@@ -75,3 +78,4 @@
 	while(1);
 	return 0;
  }
+

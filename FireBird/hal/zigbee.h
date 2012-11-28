@@ -1,5 +1,8 @@
-/* File: zigbee.h
- * Description: Zigbee control headers
+/** @file zigbee.h
+ * Zigbee control headers
+ */
+
+/*
  * Written By: Devendra Bhave (devendra@cse.iitb.ac.in)
  * Copyright (c) IIT Bombay. All Rights Reserved.
  */

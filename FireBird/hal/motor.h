@@ -1,5 +1,8 @@
-/* File: motor.h
- * Description: Motor control headers
+/** @file motor.h
+ * Motor control headers
+ */
+
+/*
  * Written By: Devendra Bhave (devendra@cse.iitb.ac.in)
  * Copyright (c) IIT Bombay. All Rights Reserved.
  */

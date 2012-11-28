@@ -1,14 +1,17 @@
-/* File: guidanceSystem.h
- * Description: Headers for Bot guidance system
+/** @file: guidanceSystem.h
+ * Headers for Bot guidance system
+ */
+
+/*
  * Written By: Devendra Bhave (devendra@cse.iitb.ac.in)
  * Copyright (c) IIT Bombay. All Rights Reserved.
  */
 
- #define EPSILON 		5	/* Minimum error in mm */
- #define LOC_ERR_PER_METRE  30  /* In mm */
+ #define EPSILON                5	/* Minimum error in mm */
+ #define LOC_ERR_PER_METRE      30  /* In mm */
  #define LOC_ERR_FOR_DIST_MM(x) ((x) * LOC_ERR_PER_METRE / 100)
- #define MAX_NODES      20  /* Maximum nodes supported in any graph */
- #define INFINITY       0xFFFF/2
+ #define MAX_NODES              20  /* Maximum nodes supported in any graph */
+ #define INFINITY               0xFFFF/2
 
  typedef enum tagBotOrientation {
     EASTWARD  = 0,
@@ -56,5 +59,8 @@
  STATUS initBotGuidanceSystem(FILE *fp, Map *pMap);
  STATUS gotoPosition(Map *pMap, UINT posX, UINT posY);
  STATUS gotoForward(Map *pMap, UINT distInMm);
+
+#ifdef DEBUG 
  void printMap(Map *pMap);
+#endif
  

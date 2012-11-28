@@ -1,5 +1,8 @@
-/* File: lcd.c
- * Description: Hardware abstraction layer for LCD control
+/** @file lcd.c
+ * Hardware abstraction layer for LCD control
+ */
+
+/*
  * Written By: Devendra Bhave (devendra@cse.iitb.ac.in)
  * Copyright (c) IIT Bombay. All Rights Reserved.
  */
@@ -120,6 +123,7 @@ static void lcdInit()
 		
 }
 
+/** Initialize LCD */
 STATUS initLcd(void) {
 	/* LCD pin config */
 	DDRC = DDRC | 0xF7; //all the LCD pin's direction set as output
@@ -132,6 +136,7 @@ STATUS initLcd(void) {
 	return STATUS_OK;
  }
  
+/** Move cursor at first column */
 void lcdHome()
 {
 	INT_LOCK();
@@ -139,6 +144,7 @@ void lcdHome()
 	INT_UNLOCK();
 }
 
+/** Clear LCD screen */
 void lcdClear()
 {
 	INT_LOCK();
@@ -146,7 +152,7 @@ void lcdClear()
 	INT_UNLOCK();
 }
 
-/*****Function to Print String on LCD*****/
+/** Print null terminated string on LCD screen */
 void lcdString(char *str)
 {
 	INT_LOCK();
@@ -158,8 +164,7 @@ void lcdString(char *str)
 	INT_UNLOCK();
 }
 
-/*** Position the LCD cursor at "row", "column". ***/
-
+/** Position the LCD cursor at given row and column. */
 void lcdCursor (int row, int column)
 {
 	INT_LOCK();
@@ -223,3 +228,4 @@ void lcdCursor (int row, int column)
 	}
 	
 } */
+

@@ -1,5 +1,8 @@
-/* File: servo.h
- * Description: Servo motor control headers
+/** @file servo.h
+ * Servo motor control headers
+*/
+
+/*
  * Written By: Devendra Bhave (devendra@cse.iitb.ac.in)
  * Copyright (c) IIT Bombay. All Rights Reserved.
  */

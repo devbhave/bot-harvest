@@ -1,3 +1,12 @@
+/** @file fileSystem.c
+ * File system module.
+ */
+
+/*
+ * Written By: Devendra Bhave (devendra@cse.iitb.ac.in)
+ * Copyright (c) IIT Bombay. All Rights Reserved.
+ */
+
  #include <stdio.h>	
  #include <prjParams.h>
  #include <prjCommon.h> 
@@ -5,12 +14,14 @@
  
  int mapReceiveByte(FILE *stream);
 
- FILE zigbeeStream = FDEV_SETUP_STREAM(zigbeeSendByte, zigbeeReceiveByte, _FDEV_SETUP_RW);
- //FILE lcdStream = FDEV_SETUP_STREAM(lcdSendByte, 0, _FDEV_SETUP_WRITE);
- FILE mapStream = FDEV_SETUP_STREAM(0, mapReceiveByte, _FDEV_SETUP_READ);
-
+ FILE zigbeeStream = FDEV_SETUP_STREAM(zigbeeSendByte, 
+    zigbeeReceiveByte, _FDEV_SETUP_RW);  /**< Device file descriptor for ZigBee.
+                                          */
+ FILE mapStream = FDEV_SETUP_STREAM(0, mapReceiveByte, _FDEV_SETUP_READ); /**< 
+    Device file descriptor for map file. */
  
- const char mapFile[] = \
+ const char mapFile[] = \ /**< Statically compiled-in read only map file data. 
+                           */
 	"4 "\
 	"0   0   C "\
 	"2040 0   C "\
@@ -21,6 +32,7 @@
 	"2   3 "\
 	"3   0 "\
 	"0   0";	/* End marker for map file */
+ 
 
 #if 0
  const char mapFile[] = \
@@ -68,6 +80,8 @@
 	"0   0";	/* End marker for map file */
 #endif
 
+ /** Returns next one byte from map file.
+  */
  int mapReceiveByte(FILE *stream) {
  	static UINT filePtr = 0;
 
@@ -77,8 +91,11 @@
 	return _FDEV_EOF;
  }
 
+ /** Initializes file system module. Redirects standard input and output to 
+  *  ZigBee.
+  */
  STATUS initFileSystem(void) {
     stdin = stdout = &zigbeeStream;
-	//stderr = &lcdStream;
  	return STATUS_OK;
  }
+

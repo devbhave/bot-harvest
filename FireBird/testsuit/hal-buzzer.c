@@ -1,5 +1,8 @@
-/* File: hal-buzzer.c
- * Description: Test cases for hardware abstraction layer for buzzer control
+/** @file hal-buzzer.c
+ * Test cases for hardware abstraction layer for buzzer control
+ */
+
+/*
  * Written By: Devendra Bhave (devendra@cse.iitb.ac.in)
  * Copyright (c) IIT Bombay. All Rights Reserved.
  */
@@ -27,3 +30,4 @@
 	}
 	return 0;
  }
+

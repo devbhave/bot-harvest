@@ -1,5 +1,8 @@
-/* File: power.h
- * Description: Power control headers
+/** @file power.h
+ * Power control headers
+ */
+
+/*
  * Written By: Devendra Bhave (devendra@cse.iitb.ac.in)
  * Copyright (c) IIT Bombay. All Rights Reserved.
  */

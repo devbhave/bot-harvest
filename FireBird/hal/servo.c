@@ -1,5 +1,8 @@
-/* File: servo.c
- * Description: Hardware abstraction layer for servo motor control
+/** @file servo.c
+ * Hardware abstraction layer for servo motor control
+ */
+
+/*
  * Written By: Devendra Bhave (devendra@cse.iitb.ac.in)
  * Copyright (c) IIT Bombay. All Rights Reserved.
  */
@@ -17,7 +20,7 @@
 //prescale:256
 // WGM: 7) PWM 10bit fast, TOP=0x03FF
 // actual value: 52.25Hz 
-void timer1Init(void)
+static void timer1Init(void)
 {
  TCCR1B = 0x00; //stop
  TCNT1H = 0xFC; //Counter high value to which OCR1xH value is to be compared with
@@ -37,6 +40,7 @@ void timer1Init(void)
  TCCR1B = 0x0C; //WGM12=1; CS12=1, CS11=0, CS10=0 (Prescaler=256)
 }
 
+/** Initialize servo motor hardware */
 STATUS initServo(void) {
 	INT_LOCK();
 	// Servo1 pin config
@@ -67,6 +71,7 @@ STATUS initServo(void) {
 	return STATUS_OK;
  }
  
+/** Set servo motor angle */
 STATUS servoSet(ServoMotor servo, UINT degree) {
 	ULINT min, max;
 	BYTE data, curr;
@@ -117,6 +122,7 @@ STATUS servoSet(ServoMotor servo, UINT degree) {
 	return STATUS_OK;
 }
 
+/** Get current angle of servo motor */
 STATUS servoGet(ServoMotor servo, UINT *degree) {
 	ASSERT(servo >= SERVO1 && servo <= SERVO3);
 	ASSERT(degree != NULL);
@@ -124,10 +130,11 @@ STATUS servoGet(ServoMotor servo, UINT *degree) {
 	return !STATUS_OK;
 }
 
-//servo_free functions unlocks the servo motors from the any angle 
-//and make them free by giving 100% duty cycle at the PWM. This function can be used to 
-//reduce the power consumption of the motor if it is holding load against the gravity.
-
+/** Free servo motor.
+ * It unlocks the servo motors from the any angle and make them free by giving
+ * 100% duty cycle at the PWM. This function can be used to reduce the power
+ * consumption of the motor if it is holding load against the gravity.
+ */
 STATUS servoFree (ServoMotor servo) {
 	ASSERT(servo >= SERVO1 && servo <= SERVO3);
 	
@@ -140,3 +147,4 @@ STATUS servoFree (ServoMotor servo) {
 	
 	return STATUS_OK; 
 }
+

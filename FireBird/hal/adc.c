@@ -1,5 +1,8 @@
-/* File: adc.c
- * Description: Hardware abstraction layer for ADC (analog to digital converter)
+/** @file: adc.c
+ * Hardware abstraction layer for ADC (analog to digital converter)
+ */
+
+/*
  * Written By: Devendra Bhave (devendra@cse.iitb.ac.in)
  * Copyright (c) IIT Bombay. All Rights Reserved.
  */
@@ -9,7 +12,7 @@
  #include <assert.h>
  #include "adc.h"
   
-/*****Function to Initialize ADC *****/
+/** Initialize ADC */
 STATUS initAdc(void)
 {
     /* Configure ADC pins */
@@ -30,6 +33,7 @@ STATUS initAdc(void)
 	return STATUS_OK;
 }
 
+/** Read specified ADC sensor */
 STATUS getAdcValue(AdcChannel channel, UINT *value) {
     UINT timeout = 0x1000;
     

@@ -1,5 +1,8 @@
-/* File: guidanceSystem.c
- * Description: Bot guidance system file
+/** @file: guidanceSystem.c
+ * Automatic Bot guidance system module
+ */
+
+/*
  * Written By: Devendra Bhave (devendra@cse.iitb.ac.in)
  * Copyright (c) IIT Bombay. All Rights Reserved.
  */
@@ -17,9 +20,12 @@
  static BotLocation thisBotLocation;
  static BotOrientation thisBotOrientation;
 
+#ifdef DEBUG
  void printMap(Map *pMap);
  void printPath(Path *p);
-  
+#endif
+
+ /** Returns integer square root using integer operations only */
  static UINT intSqrt(ULINT x) {
     register ULINT op, res, one;
 
@@ -41,6 +47,7 @@
     return (UINT)res;
  }
  
+ /** Returns Eucliean distance between to Cartesian co-ordinates */
  static UINT getEuclideanDistance(UINT x1, UINT y1, UINT x2, UINT y2) {
     ULINT magX, magY;
     
@@ -61,8 +68,12 @@
     return intSqrt(magX*magX + magY*magY);
  }
  
- static STATUS getPositionMetaInfo(Map *pMap, UINT posX, UINT posY,
-                                    PositionMetaInfo *pInfo) {
+/** Retrieves meta information about given Cartesian co-ordinate in the map */
+ static STATUS getPositionMetaInfo(
+        Map *pMap,  /**< Pointer to map object */
+        UINT posX, UINT posY,  /**< Co-ordinates of the location on the map */
+        PositionMetaInfo *pInfo /**< Output meta information */
+    ) {
     UINT idx, idx2;
                                     
     ASSERT(pMap != NULL);
@@ -126,7 +137,9 @@
     return STATUS_OK;
  }
  
- static void floydWarshall(Map *pMap) {
+ /** Computes all node shortest paths using Floyd-Warshall algorithm */
+ static void floydWarshall(Map *pMap    /**< Pointer to map object */
+    ) {
 	UINT k, i, j;
 	UINT d_temp[MAX_NODES][MAX_NODES], p_temp[MAX_NODES][MAX_NODES];
 
@@ -166,6 +179,7 @@
 	}
  }
 
+ /** Loads map from file */
  static STATUS loadMap(FILE *fp, Map *map) {
     UINT idx, idx2;
 	UINT nodeA, nodeB;
@@ -247,7 +261,11 @@
 	return STATUS_OK;
  }
 
-static UINT getNearestNode(Map *pMap, UINT x, UINT y){
+/** Returns index of the nearest node from specified co-ordinate in the map */
+static UINT getNearestNode(Map *pMap,   /**< Pointer to map object */
+                           UINT x,      /**< X co-ordinate of the location */
+                           UINT y       /**< Y co-ordinate of the location */
+    ){
     UINT minDist, minIdx;
     UINT idx, dist;
     
@@ -270,8 +288,15 @@ static UINT getNearestNode(Map *pMap, UINT x, UINT y){
     
     return minIdx;
 }
- 
- STATUS initBotGuidanceSystem(FILE *fp, Map *pMap) {
+
+ /** Initializes automatic bot guidance system. 
+  *  Loads map from given map file. Pre-computes all shortest paths.
+  *  pMap, which is allocated but un-intialized before the call, is filled with 
+  *  map information after the call.
+  */ 
+ STATUS initBotGuidanceSystem(FILE *fp, /**< Map file  */
+                              Map *pMap /**< Pre-allocated map object */
+    ) {
  	
 	ASSERT(fp != NULL); 
     ASSERT(pMap != NULL);
@@ -292,6 +317,7 @@ static UINT getNearestNode(Map *pMap, UINT x, UINT y){
 	return STATUS_OK;
  }
  
+#ifdef DEBUG
  /***** Debug routines *****/
  void printPath(Path *p) {
     UINT i;
@@ -366,13 +392,17 @@ static UINT getNearestNode(Map *pMap, UINT x, UINT y){
         //printf("\n");
     }
 }
+#endif
 
+ /** Converts orientation into angle */
  static int getAngleFromOrientation(BotOrientation or) {
     const int angle[] = {0, 90, 180, 270};
     ASSERT((or == EASTWARD) || (or == NORTHWARD) || (or == WESTWARD) ||
            (or == SOUTHWARD));
     return angle[or];
  }
+
+/** Copy function for Path objects */
 static Path* copyPath(Path *lval, Path *rval) {
     UINT idx;
     UINT *lptr, *rptr;
@@ -394,7 +424,12 @@ static Path* copyPath(Path *lval, Path *rval) {
     return rval;
 }
 
-STATUS getShortestPath(Map *pMap, UINT srcNode, UINT destNode, Path *shortestPath) {
+/** Finds shortest path between source and destination nodes in the map */
+STATUS getShortestPath( Map *pMap,          /**< Pointer to map object */
+                        UINT srcNode,       /**< Source node index */
+                        UINT destNode,      /**< Destination node index */
+                        Path *shortestPath  /**< Returned shortest path */
+    ) {
     UINT idx, prevNode;
     UINT computedPath[MAX_NODES];
     UINT *pNode;
@@ -436,8 +471,15 @@ STATUS getShortestPath(Map *pMap, UINT srcNode, UINT destNode, Path *shortestPat
     return STATUS_OK;
 }
 
-STATUS analyzeShortestRoute(Map *pMap, UINT x1, UINT y1, UINT x2, UINT y2, 
-    Path *path) {
+/** Analysis phase for shortest path between two locations on the map */
+STATUS analyzeShortestRoute(
+    Map *pMap,  /**< Pointer to map object */ 
+    UINT x1,    /**< X co-ordinate of first location */ 
+    UINT y1,    /**< Y co-ordinate of first location */  
+    UINT x2,    /**< X co-ordinate of second location */  
+    UINT y2,    /**< Y co-ordinate of second location */   
+    Path *path  /**< Shortest path returned */  
+    ) {
     Path pathAA, pathAB, pathBA, pathBB;
     PositionMetaInfo info1, info2;
     UINT distAA, distAB, distBA, distBB;
@@ -583,7 +625,16 @@ STATUS analyzeShortestRoute(Map *pMap, UINT x1, UINT y1, UINT x2, UINT y2,
     return !STATUS_OK;
 }
 
-STATUS computeOrientation(UINT x1, UINT y1, UINT x2, UINT y2, BotOrientation *ort) {
+/** Calculates required orientation when the Bot is at location (x1, y1) and
+ *  needs to move to location (x2, y2)
+ */
+STATUS computeOrientation(
+    UINT x1,    /**< X Co-ordinate of first location */
+    UINT y1,    /**< Y Co-ordinate of first location */ 
+    UINT x2,    /**< X Co-ordinate of second location */
+    UINT y2,    /**< Y Co-ordinate of second location */
+    BotOrientation *ort /**< Returned orientation */
+    ) {
     ASSERT(ort != NULL);
     
     if( (x1 < x2) && (y1 == y2) ) {
@@ -606,6 +657,7 @@ STATUS computeOrientation(UINT x1, UINT y1, UINT x2, UINT y2, BotOrientation *or
     return STATUS_OK;
 }
 
+/** Sets current orientation of the Bot */
 STATUS setBotOrientation(BotOrientation nextOrientation) {
     int rotation;
     
@@ -631,7 +683,13 @@ STATUS setBotOrientation(BotOrientation nextOrientation) {
     return STATUS_OK;
 }
 
-STATUS gotoPosition(Map *pMap, UINT posX, UINT posY) {
+/** GoTo primitive for automatic bot guidance system. 
+ *  Moves the Bot from current location to specified location on the map 
+ */
+STATUS gotoPosition(Map *pMap, /**< Pointer to map object */ 
+                    UINT posX, /**< X co-ordinate of destination */ 
+                    UINT posY  /**< Y co-ordinate of destination */ 
+    ) {
     UINT idx;
     BotLocation nextLocation;
     BotOrientation nextOrientation, lookAheadOrientation;
@@ -878,7 +936,12 @@ STATUS gotoPosition(Map *pMap, UINT posX, UINT posY) {
 	return STATUS_OK;
 }
 
-STATUS gotoForward(Map *pMap, UINT distInMm) {
+/** Forward primitive for automatic bot guidance system.
+ *  Moves the Bot forward by specified distance (in millimeters)
+ */
+STATUS gotoForward(Map *pMap, /**< Pointer to map object */
+                   UINT distInMm /** Forwarding distance (in millimeters) */
+    ) {
     UINT posX, posY;
     PositionMetaInfo info;
     STATUS ret;
@@ -907,6 +970,7 @@ STATUS gotoForward(Map *pMap, UINT distInMm) {
     return gotoPosition(pMap, posX, posY);
 }
 
+#ifdef DEBUG
 void test_getPositionMetaInfo(Map *pMap) {
     UINT x, y;
     PositionMetaInfo info;
@@ -1038,6 +1102,7 @@ void test_gotoPosition2(Map *pMap){
         ASSERT(ret == STATUS_OK);
     }
 }
+#endif 
 
 #if 0
 int main() {

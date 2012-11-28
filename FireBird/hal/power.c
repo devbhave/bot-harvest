@@ -1,5 +1,8 @@
-/* File: power.c
- * Description: Hardware abstraction layer for power control of various devices
+/** @file power.c
+ * Hardware abstraction layer for power control of various devices
+*/
+
+/*
  * Written By: Devendra Bhave (devendra@cse.iitb.ac.in)
  * Copyright (c) IIT Bombay. All Rights Reserved.
  */
@@ -8,6 +11,7 @@
  #include <prjCommon.h>
  #include <hal/power.h>
  
+/** Initialize power control hardware */
  STATUS initPower(void) {
     /* Configure MOSFET switch */
     
@@ -21,6 +25,7 @@
 	return STATUS_OK;
  }
  
+/** Turn on specified group of sensors */
  STATUS powerOn(SensorGroup sg) {
     if(sg == SG_GROUP1 || sg == SG_ALL) {
         PORTG = PORTG & 0xFB;
@@ -34,6 +39,7 @@
     return STATUS_OK;
  }
  
+/** Turn off specified group of sensors */
  STATUS powerOff(SensorGroup sg) {
     if(sg == SG_GROUP1 || sg == SG_ALL) {
         PORTG = PORTG | 0x04;

@@ -1,6 +1,8 @@
-/* File: assert.h
- * Description: Assertion headers
- * Written By: Devendra Bhave (devendra@cse.iitb.ac.in)
+/** @file: assert.h
+ * Assertion utility headers
+ */
+
+/* Written By: Devendra Bhave (devendra@cse.iitb.ac.in)
  * Copyright (c) IIT Bombay. All Rights Reserved.
  */
 

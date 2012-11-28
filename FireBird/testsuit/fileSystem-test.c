@@ -1,5 +1,8 @@
-/* File: whiteLineFollower-test.c
- * Description: Test cases for white line follower module
+/** @file fileSystem-test.c
+ * Test cases for file system module
+ */
+
+/*
  * Written By: Devendra Bhave (devendra@cse.iitb.ac.in)
  * Copyright (c) IIT Bombay. All Rights Reserved.
  */

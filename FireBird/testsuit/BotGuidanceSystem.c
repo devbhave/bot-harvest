@@ -1,3 +1,12 @@
+/** @file BotGuidanceSystem.c
+ * Bot firmware for automatic bot guidance system
+ */
+
+/*
+ * Written By: Devendra Bhave (devendra@cse.iitb.ac.in)
+ * Copyright (c) IIT Bombay. All Rights Reserved.
+ */
+
  #include <stdio.h>
  #include <string.h>
  #include <prjParams.h>
@@ -34,6 +43,7 @@
 #define PACKET_SIZE 14
 #define PACKET_SENTINEL "!"
 
+/** Send control command */
 STATUS sendCommand(UINT cmd, UINT arg0, UINT arg1) {
     unsigned char rCmd;
     UINT rArg0, rArg1;
@@ -57,6 +67,7 @@ STATUS sendCommand(UINT cmd, UINT arg0, UINT arg1) {
 	return STATUS_OK;
 }
 
+/** Receive control command */
 STATUS receiveCommand(UINT *cmd, UINT *arg0, UINT *arg1) {
     char sCmd, rCmd;
     int sArg0, sArg1, rArg0, rArg1;
@@ -87,6 +98,9 @@ STATUS receiveCommand(UINT *cmd, UINT *arg0, UINT *arg1) {
 	return STATUS_OK;
 }
 
+/** Synchronize control command stream.
+ *  As wireless command transmission is lossy, synchronization is needed.
+ */
 void syncCommandStream(){
 	while(getchar() != '!');
 }
@@ -136,6 +150,8 @@ STATUS receiveCommand(UINT *data, UINT *arg0, UINT *arg1) {
     return STATUS_OK;
 } 
 #endif
+ /** Read battery voltage level. Voltage value returned is actual voltage 
+   * multiplied by 100. */
  STATUS getBatteryVoltage(UINT *voltage) {
  	UINT value;
 	
@@ -146,6 +162,7 @@ STATUS receiveCommand(UINT *data, UINT *arg0, UINT *arg1) {
  	return !STATUS_OK;
  }
 
+/** Main function for the Bot firmware */
  int main() {
     Map thisMap;
 	STATUS ret;
@@ -339,3 +356,4 @@ STATUS receiveCommand(UINT *data, UINT *arg0, UINT *arg1) {
 	}
     return 0;
  }
+

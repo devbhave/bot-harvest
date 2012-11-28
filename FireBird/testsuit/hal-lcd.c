@@ -1,5 +1,8 @@
-/* File: hal-motor.c
- * Description: Test cases for hardware abstraction layer for motor control
+/** @file hal-lcd.c
+ * Test cases for hardware abstraction layer for LCD
+ */
+
+/*
  * Written By: Devendra Bhave (devendra@cse.iitb.ac.in)
  * Copyright (c) IIT Bombay. All Rights Reserved.
  */
@@ -61,3 +64,4 @@
 	
 	return 0;
  }
+

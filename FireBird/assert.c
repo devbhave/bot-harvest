@@ -1,6 +1,8 @@
-/* File: assert.c
- * Description: Assertion utility
- * Written By: Devendra Bhave (devendra@cse.iitb.ac.in)
+/** @file: assert.c
+ * Assertion utility module
+ */
+
+/* Written By: Devendra Bhave (devendra@cse.iitb.ac.in)
  * Copyright (c) IIT Bombay. All Rights Reserved.
  */
  
@@ -12,8 +14,17 @@
  #include <hal/lcd.h>
  #include <hal/motor.h>
  #include <hal/buzzer.h>
-  
- void assert(UINT compResult, char *file, UINT lineNum, char *msg) {
+ 
+ /** Assertion for FireBird.
+  *  When assertion fails FireBird bot halts, displays line number, file name
+  *  and message (typically expression that failed) on the screen and starts
+  *  beeping continuously.
+  */ 
+ void assert(UINT compResult, /**< Result of the condition being asserted  */
+             char *file,      /**< Name of the file as string */
+             UINT lineNum,    /**< Line number on which assert() is placed */
+             char *msg        /**< Custom message for the user */
+            ) {
 	UINT i;
 	char line[33], line1[17], line2[17];
 	

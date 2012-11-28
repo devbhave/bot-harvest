@@ -1,5 +1,8 @@
-/* File: motor.c
- * Description: Hardware abstraction layer for motor control
+/** @file motor.c
+ * Hardware abstraction layer for motor control
+ */
+
+/*
  * Written By: Devendra Bhave (devendra@cse.iitb.ac.in)
  * Copyright (c) IIT Bombay. All Rights Reserved.
  */
@@ -35,6 +38,7 @@ static void timer5Init(void) {
 }
 
  /* Interrupt safe */
+/** Initialize DC motor control */
  STATUS initMotor(void) {
     /* Configure pins */
     
@@ -50,6 +54,7 @@ static void timer5Init(void) {
  }
  
  /* Interrupt unsafe */
+/** Set bot motion direction */
  STATUS motorDirectionSet(MotorDirection direction) { 
     BYTE PortARestore = 0;
 
@@ -66,6 +71,7 @@ static void timer5Init(void) {
  }
  
  /* Interrupt unsafe */
+/** Set bot velocity using PWM (Pulse Width Modulation */
  STATUS motorVelocitySet(BYTE leftMotor, BYTE rightMotor) {
 	INT_LOCK();
     OCR5AL = leftMotor;
@@ -76,6 +82,7 @@ static void timer5Init(void) {
  }
  
   /* Interrupt unsafe */
+/** Get current bot velocity */
  STATUS motorVelocityGet(BYTE *leftMotor, BYTE *rightMotor) {
  	ASSERT(leftMotor != NULL);
 	ASSERT(rightMotor != NULL);
@@ -89,6 +96,7 @@ static void timer5Init(void) {
  }
 
  /* Interrupt unsafe */
+/** Initialize left position encoder interrupt */
  STATUS motorLeftPositionEncoderInit(void (*callbackLIntr)(void)) {
 
 	/* Check if argument is invalid or callback is already registered */
@@ -106,6 +114,7 @@ static void timer5Init(void) {
 }
 
 /* Interrupt unsafe */
+/** Initialize right position encoder interrupt */
 STATUS motorRightPositionEncoderInit(void (*callbackRIntr)(void)) {
 
 	/* Check if argument is invalid or callback is already registered */
@@ -123,6 +132,7 @@ STATUS motorRightPositionEncoderInit(void (*callbackRIntr)(void)) {
 }
 
 /* Interrupt safe */
+/** Enable/disable left position encoder interrupt */
 void motorLeftPositionEncoderInterruptConfig(UINT state) {
 		
 	if(state != INTR_OFF)
@@ -132,6 +142,7 @@ void motorLeftPositionEncoderInterruptConfig(UINT state) {
 }
 
 /* Interrupt safe */
+/** Enable/disable right position encoder interrupt */
 void motorRightPositionEncoderInterruptConfig(UINT state) {
 		
 	if(state != INTR_OFF)

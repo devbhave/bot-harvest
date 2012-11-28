@@ -1,5 +1,8 @@
-/* File: adc.h
- * Description: ADC control headers
+/** @file adc.h
+ * ADC control headers
+ */
+
+/*
  * Written By: Devendra Bhave (devendra@cse.iitb.ac.in)
  * Copyright (c) IIT Bombay. All Rights Reserved.
  */

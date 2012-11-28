@@ -1,5 +1,8 @@
-/* File: prjParams.h
- * Description: Parameter values for the project
+/** @file prjParams.h
+ * Parameter values for the project
+ */
+
+/*
  * Written By: Devendra Bhave (devendra@cse.iitb.ac.in)
  * Copyright (c) IIT Bombay. All Rights Reserved.
  */

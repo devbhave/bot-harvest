@@ -1,5 +1,8 @@
-/* File: lcd.h
- * Description: LCD control headers
+/** @file lcd.h
+ * LCD control headers
+*/
+
+/*
  * Written By: Devendra Bhave (devendra@cse.iitb.ac.in)
  * Copyright (c) IIT Bombay. All Rights Reserved.
  */
