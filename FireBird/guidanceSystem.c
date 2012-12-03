@@ -727,7 +727,7 @@ STATUS gotoPosition(Map *pMap, /**< Pointer to map object */
     
 	// debug start
     //printf("------ Analyzed Path -------\n");
-	printPath(&shortestPath);
+	//printPath(&shortestPath);
     //printf("----------------------------\n");	
 	//debug end
 	

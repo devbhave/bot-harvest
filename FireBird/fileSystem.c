@@ -20,8 +20,9 @@
  FILE mapStream = FDEV_SETUP_STREAM(0, mapReceiveByte, _FDEV_SETUP_READ); /**< 
     Device file descriptor for map file. */
  
- const char mapFile[] = \ /**< Statically compiled-in read only map file data. 
-                           */
+ /** Statically compiled-in read only map file data. 
+   */
+ const char mapFile[] = \ 
 	"4 "\
 	"0   0   C "\
 	"2040 0   C "\
